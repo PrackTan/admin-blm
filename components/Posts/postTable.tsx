@@ -47,7 +47,7 @@ const PostTable = ({ posts, title, limit }: PostTableProps) => {
                   {post.createdAt.toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  <Link href={`/posts/${post.id}`}>
+                  <Link href={`/posts/edit/${post.id}`}>
                     <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs">
                       Edit
                     </Button>
