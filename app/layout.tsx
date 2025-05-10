@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
 import { Toaster } from "sonner";
+
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import Sidebar from "@/components/Sidebar";
+import Navbar from "@/components/Navbar";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,11 +33,12 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          enableSystem={true}
           storageKey="dashboard-theme"
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

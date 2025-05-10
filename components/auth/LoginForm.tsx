@@ -79,7 +79,50 @@ const LoginForm = () => {
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
-          ></form>
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
+                    Email
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="bg-slate-100 dark:bg-slate-500 border-0 text-black focus-visible:ring-0 dark:text-white"
+                      {...field}
+                      placeholder="Nhập email"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
+                    Mật khẩu
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="bg-slate-100 dark:bg-slate-500 border-0 text-black focus-visible:ring-0 dark:text-white"
+                      {...field}
+                      placeholder="Nhập mật khẩu"
+                      type="password"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
+            </Button>
+          </form>
         </Form>
       </CardContent>
     </Card>

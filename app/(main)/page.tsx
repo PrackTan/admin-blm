@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import DashboardCard from "../../components/dashboard/DashboardCard";
+import DashboardCard from "@/components/dashboard/DashboardCard";
 import { Folder, Folders, Newspaper, Users, MessageCircle } from "lucide-react";
 import PostTable from "@/components/posts/postTable";
 import postData from "@/data/postData";
