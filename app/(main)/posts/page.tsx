@@ -8,7 +8,7 @@ const PostsPage = () => {
     <>
       <BackButton text="Back to Home" href="/" />
       {/* <PostTable posts={postData} title="Posts" /> */}
-      <PostPagination />
+      {/* <PostPagination /> */}
     </>
   );
 };
