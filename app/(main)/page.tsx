@@ -1,10 +1,6 @@
 "use client";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import { Folder, Folders, Newspaper, Users, MessageCircle } from "lucide-react";
-import PostTable from "@/components/posts/postTable";
-import postData from "@/data/postData";
 import AnalyticsChart from "@/components/dashboard/AnalyticsChart";
 import useFetch from "@/hooks/useFetch";
 import ReviewsTable from "@/components/Reviews/reviewsTable";
