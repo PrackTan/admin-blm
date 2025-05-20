@@ -1,9 +1,6 @@
 "use client";
 import BackButton from "@/components/Backbutton";
-import PostPagination from "@/components/posts/postPagination";
-import PostTable from "@/components/posts/postTable";
 import useFetch from "@/hooks/useFetch";
-import postData from "@/data/postData";
 import ReviewsTable from "@/components/Reviews/reviewsTable";
 
 const PostsPage = () => {
