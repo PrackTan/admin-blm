@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Post } from "@/types/post";
 import { FaStar } from "react-icons/fa6";
@@ -14,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import ReviewDialog from "./review-Dialog";
 interface PostTableProps {
   limit?: number;
   data: Review[];
@@ -101,11 +103,21 @@ const ReviewsTable = ({ data, title, limit }: PostTableProps) => {
                   {format(review.createdAt)}
                 </TableCell>
                 <TableCell>
-                  <Link href={`/posts/edit/${review.sku}`}>
+                  <ReviewDialog
+                    sku={review.sku}
+                    titleButton="Edit"
+                    titleDialog="Edit Review"
+                    descriptionDialog="Edit the review"
+                    name={review.username}
+                    comment={review.comment}
+                    rating={review.rating}
+                    reply={review.reply}
+                  />
+                  {/* <Link href={`/posts/edit/${review.sku}`}>
                     <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs">
                       Edit
                     </Button>
-                  </Link>
+                  </Link> */}
                 </TableCell>
               </TableRow>
             ))}

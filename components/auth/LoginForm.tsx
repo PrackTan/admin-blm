@@ -36,8 +36,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import BackButton from "@/components/Backbutton";
+import useFetch from "@/hooks/useFetch";
 const formSchema = z.object({
-  email: z.string().email({ message: "Email không hợp lệ" }),
+  username: z.string().email({ message: "Email không hợp lệ" }),
   password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
 });
 // Đoạn code dưới đây định nghĩa schema xác thực form đăng nhập sử dụng thư viện zod
@@ -49,23 +50,45 @@ const LoginForm = () => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-
+  const [data, setData] = useState(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
+  const handleSubmit = async (dataSubmit: z.infer<typeof formSchema>) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}auth/login`,
+        {
+          method: "POST",
+          credentials: "include", // dùng để lưu session
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataSubmit),
+        }
+      );
 
-    setTimeout(() => {
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Đăng nhập thất bại");
+      }
+
       toast.success("Đăng nhập thành công");
-      router.push("/dashboard");
+      router.push("/");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Lỗi không xác định"
+      );
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -82,7 +105,7 @@ const LoginForm = () => {
           >
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
