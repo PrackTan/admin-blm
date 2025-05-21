@@ -1,6 +1,13 @@
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
-const MainLayout = ({ children }: { children: React.ReactNode }) => {
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+const MainLayout = async ({ children }: { children: React.ReactNode }) => {
+  const token = (await cookies()).get("access_token")?.value;
+
+  if (!token) {
+    redirect("/auth");
+  }
   return (
     <>
       <Navbar />
