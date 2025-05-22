@@ -25,7 +25,7 @@ const useFetch = ({ endpoint, options }: UseFetchProps) => {
       }
     };
     fetchData();
-  }, [endpoint, JSON.stringify(options)]);
+  }, [data, endpoint, JSON.stringify(options)]);
   return { data, error, loading };
 };
 

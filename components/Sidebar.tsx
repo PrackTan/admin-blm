@@ -17,6 +17,7 @@ import {
   Settings,
   LogOut,
   User,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 const Sidebar = () => {
@@ -37,6 +38,10 @@ const Sidebar = () => {
           <CommandItem>
             <Folders className="w-4 h-4 mr-2" />
             <Link href="/categories">Categories</Link>
+          </CommandItem>
+          <CommandItem>
+            <Users className="w-4 h-4 mr-2" />
+            <Link href="/users">Users</Link>
           </CommandItem>
           <CommandItem>
             <CreditCard className="w-4 h-4 mr-2" />

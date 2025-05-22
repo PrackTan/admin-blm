@@ -6,6 +6,7 @@ const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
 
   // // Nếu đã đăng nhập (có token), thì chuyển hướng sang /main
   // if (token) {
+  //   console.l
   //   redirect("/"); // ✨ Sẽ hoạt động cả trên Vercel
   // }
   return (
