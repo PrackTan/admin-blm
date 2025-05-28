@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { Post } from "@/types/post";
+import React, { useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { BsFillChatRightQuoteFill } from "react-icons/bs";
 
@@ -13,9 +12,10 @@ import {
   TableCaption,
   TableHead,
 } from "@/components/ui/table";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import ReviewDialog from "./review-Dialog";
+import { Button } from "@/components/ui/button";
+import useFetch from "@/hooks/useFetch";
+
 interface PostTableProps {
   limit?: number;
   data: Review[];
@@ -48,19 +48,99 @@ const ReviewsTable = ({ data, title, limit }: PostTableProps) => {
       day: "numeric",
     });
   };
+
+  const [newReview, setNewReview] = useState({
+    sku: "",
+    comment: "",
+    rating: 0,
+  });
+
+  const handleAddReview = () => {
+    const postReview = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/reviews", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newReview),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to post review");
+        }
+        const result = await response.json();
+        console.log("Review posted successfully:", result);
+        alert("🟢 Review posted successfully!");
+        window.location.reload(); // refresh danh sách review
+      } catch (error) {
+        console.error("Failed to post review:", error);
+        alert("🔴 Failed to post review!");
+      }
+    };
+
+    postReview();
+  };
+
+  const handleAddFile = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".xlsx";
+
+    input.onchange = async (e: any) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/v1/reviews/import-excel",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Upload failed");
+        }
+
+        const result = await response.json();
+        console.log("Import result:", result);
+
+        alert("🟢 Import thành công!");
+        window.location.reload(); // refresh danh sách review
+      } catch (error) {
+        console.error("Import failed:", error);
+        alert("🔴 Import thất bại!");
+      }
+    };
+
+    input.click(); // mở hộp thoại chọn file
+  };
+
   return (
     <>
       <div className="mt-10">
         <h3 className="text-2xl mb-4 font-semibold">
           {title ? title : "Reviews"}
         </h3>
+        <div className="mb-4 flex gap-2">
+          <Button onClick={handleAddReview} className="bg-blue-500 text-white">
+            Add Review
+          </Button>
+          <Button onClick={handleAddFile} className="bg-green-500 text-white">
+            Add File
+          </Button>
+        </div>
         <Table className="border-collapse border border-gray-300">
           <TableCaption> Reviews</TableCaption>
           <TableHeader className="bg-gray-300">
             <TableRow>
               <TableHead>Customer</TableHead>
-              <TableHead className="hidden md:table-cell">Comment</TableHead>
               <TableHead className="hidden md:table-cell">Rating</TableHead>
+              <TableHead className="hidden md:table-cell">Comment</TableHead>
               <TableHead className="hidden md:table-cell text-right">
                 Created At
               </TableHead>
@@ -113,11 +193,6 @@ const ReviewsTable = ({ data, title, limit }: PostTableProps) => {
                     rating={review.rating}
                     reply={review.reply}
                   />
-                  {/* <Link href={`/posts/edit/${review.sku}`}>
-                    <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs">
-                      Edit
-                    </Button>
-                  </Link> */}
                 </TableCell>
               </TableRow>
             ))}
