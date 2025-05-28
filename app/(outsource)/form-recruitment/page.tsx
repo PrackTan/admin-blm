@@ -162,7 +162,7 @@ export default function RecruitmentForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+    <div className="min-h-screen  py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -199,7 +199,7 @@ export default function RecruitmentForm() {
                 <Label htmlFor="gioitinh">Giới tính *</Label>
                 <Select
                   value={formData.gioitinh}
-                  onValueChange={(value: string) =>
+                  onValueChange={(value) =>
                     handleSelectChange("gioitinh", value)
                   }
                 >
@@ -274,7 +274,7 @@ export default function RecruitmentForm() {
                 <Label htmlFor="honnhan">Tình trạng hôn nhân</Label>
                 <Select
                   value={formData.honnhan}
-                  onValueChange={(value: string) =>
+                  onValueChange={(value) =>
                     handleSelectChange("honnhan", value)
                   }
                 >
@@ -329,7 +329,6 @@ export default function RecruitmentForm() {
                 <Input
                   id="chieucao"
                   name="chieucao"
-                  type="number"
                   value={formData.chieucao}
                   onChange={handleChange}
                   placeholder="Chiều cao"
@@ -341,7 +340,6 @@ export default function RecruitmentForm() {
                 <Input
                   id="cannang"
                   name="cannang"
-                  type="number"
                   value={formData.cannang}
                   onChange={handleChange}
                   placeholder="Cân nặng"
@@ -399,7 +397,6 @@ export default function RecruitmentForm() {
                 <Input
                   id="luongcoban"
                   name="luongcoban"
-                  type="number"
                   value={formData.luongcoban}
                   onChange={handleChange}
                   placeholder="Lương cơ bản mong muốn"
@@ -411,7 +408,6 @@ export default function RecruitmentForm() {
                 <Input
                   id="kpi"
                   name="kpi"
-                  type="number"
                   value={formData.kpi}
                   onChange={handleChange}
                   placeholder="KPI mong muốn"
@@ -425,7 +421,6 @@ export default function RecruitmentForm() {
                 <Input
                   id="tongthunhapmongmuon"
                   name="tongthunhapmongmuon"
-                  type="number"
                   value={formData.tongthunhapmongmuon}
                   onChange={handleChange}
                   placeholder="Tổng thu nhập mong muốn"
@@ -458,7 +453,7 @@ export default function RecruitmentForm() {
                 <Label htmlFor="trinhdo">Trình độ</Label>
                 <Select
                   value={formData.trinhdo}
-                  onValueChange={(value: string) =>
+                  onValueChange={(value) =>
                     handleSelectChange("trinhdo", value)
                   }
                 >
@@ -491,7 +486,7 @@ export default function RecruitmentForm() {
                 <Label htmlFor="tinhtrang">Tình trạng học tập</Label>
                 <Select
                   value={formData.tinhtrang}
-                  onValueChange={(value: string) =>
+                  onValueChange={(value) =>
                     handleSelectChange("tinhtrang", value)
                   }
                 >
@@ -600,7 +595,6 @@ export default function RecruitmentForm() {
                     <Input
                       id="thunhapcty"
                       name="thunhapcty"
-                      type="number"
                       value={formData.thunhapcty}
                       onChange={handleChange}
                       placeholder="Thu nhập tại công ty"
@@ -667,7 +661,6 @@ export default function RecruitmentForm() {
                     <Input
                       id="thunhapcty1"
                       name="thunhapcty1"
-                      type="number"
                       value={formData.thunhapcty1}
                       onChange={handleChange}
                       placeholder="Thu nhập tại công ty"
@@ -714,7 +707,7 @@ export default function RecruitmentForm() {
                 <Label htmlFor="full1ngay">Có thể làm full 1 ngày</Label>
                 <Select
                   value={formData.full1ngay}
-                  onValueChange={(value: string) =>
+                  onValueChange={(value) =>
                     handleSelectChange("full1ngay", value)
                   }
                 >
@@ -732,9 +725,7 @@ export default function RecruitmentForm() {
                 <Label htmlFor="xoayca">Có thể xoay ca</Label>
                 <Select
                   value={formData.xoayca}
-                  onValueChange={(value: string) =>
-                    handleSelectChange("xoayca", value)
-                  }
+                  onValueChange={(value) => handleSelectChange("xoayca", value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn" />
@@ -800,7 +791,7 @@ export default function RecruitmentForm() {
                 <Label htmlFor="kenhtuyendung">Kênh tuyển dụng</Label>
                 <Select
                   value={formData.kenhtuyendung}
-                  onValueChange={(value: string) =>
+                  onValueChange={(value) =>
                     handleSelectChange("kenhtuyendung", value)
                   }
                 >
@@ -821,7 +812,7 @@ export default function RecruitmentForm() {
                 <Label htmlFor="baohiem">Có bảo hiểm</Label>
                 <Select
                   value={formData.baohiem}
-                  onValueChange={(value: string) =>
+                  onValueChange={(value) =>
                     handleSelectChange("baohiem", value)
                   }
                 >
