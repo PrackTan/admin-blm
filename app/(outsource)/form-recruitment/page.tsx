@@ -25,6 +25,11 @@ import {
   Mail,
   Users,
   Loader2,
+  FileText,
+  Upload,
+  X,
+  Plus,
+  Minus,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -77,6 +82,8 @@ export default function RecruitmentForm() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [showSecondCompany, setShowSecondCompany] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -93,6 +100,65 @@ export default function RecruitmentForm() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Kiểm tra định dạng file
+      const allowedTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Chỉ chấp nhận file PDF, DOC hoặc DOCX!");
+        return;
+      }
+
+      // Kiểm tra kích thước file (tối đa 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File không được vượt quá 5MB!");
+        return;
+      }
+
+      setCvFile(file);
+      toast.success("File CV đã được chọn thành công!");
+    }
+  };
+
+  const removeFile = () => {
+    setCvFile(null);
+    // Reset input file
+    const fileInput = document.getElementById("cvFile") as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (
+      Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+    );
+  };
+
+  const toggleSecondCompany = () => {
+    setShowSecondCompany(!showSecondCompany);
+    // Nếu ẩn công ty thứ 2, xóa dữ liệu của nó
+    if (showSecondCompany) {
+      setFormData((prev) => ({
+        ...prev,
+        thoigiancty1: "",
+        tencty1: "",
+        cviecdalam1: "",
+        thunhapcty1: "",
+        lydonghi1: "",
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -116,6 +182,11 @@ export default function RecruitmentForm() {
             <td style="padding: 30px; text-align: center; background-color: #4f46e5; color: white;">
                 <h1 style="margin: 0; font-size: 28px; font-weight: bold;">Form Ứng Tuyển</h1>
                 <p style="margin: 10px 0 0 0; font-size: 16px;">Thông tin ứng viên</p>
+                ${
+                  cvFile
+                    ? `<p style="margin: 10px 0 0 0; font-size: 14px; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 4px;">📎 File CV đính kèm: ${cvFile.name}</p>`
+                    : ""
+                }
             </td>
         </tr>
         <!-- Thông tin cá nhân -->
@@ -133,67 +204,93 @@ export default function RecruitmentForm() {
                                 <tr>
                                     <td width="50%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Họ và tên:</strong><br>
-                                        <span style="color: #6b7280;">${formData.hovaten}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.hovaten
+                                        }</span>
                                     </td>
                                     <td width="50%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Giới tính:</strong><br>
-                                        <span style="color: #6b7280;">${formData.gioitinh}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.gioitinh
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Ngày sinh:</strong><br>
-                                        <span style="color: #6b7280;">${formData.ngaysinh}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.ngaysinh
+                                        }</span>
                                     </td>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Số điện thoại:</strong><br>
-                                        <span style="color: #6b7280;">${formData.dienthoai}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.dienthoai
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">CMND/CCCD:</strong><br>
-                                        <span style="color: #6b7280;">${formData.CMND}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.CMND
+                                        }</span>
                                     </td>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Ngày cấp:</strong><br>
-                                        <span style="color: #6b7280;">${formData.ngaycap}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.ngaycap
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Nơi cấp:</strong><br>
-                                        <span style="color: #6b7280;">${formData.noicap}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.noicap
+                                        }</span>
                                     </td>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Tình trạng hôn nhân:</strong><br>
-                                        <span style="color: #6b7280;">${formData.honnhan}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.honnhan
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Địa chỉ thường trú:</strong><br>
-                                        <span style="color: #6b7280;">${formData.thuongtru}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.thuongtru
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Email:</strong><br>
-                                        <span style="color: #6b7280;">${formData.email}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.email
+                                        }</span>
                                     </td>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Facebook:</strong><br>
-                                        <span style="color: #6b7280;">${formData.facebook}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.facebook
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Chiều cao:</strong><br>
-                                        <span style="color: #6b7280;">${formData.chieucao}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.chieucao
+                                        }</span>
                                     </td>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Cân nặng:</strong><br>
-                                        <span style="color: #6b7280;">${formData.cannang}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.cannang
+                                        }</span>
                                     </td>
                                 </tr>
                             </table>
@@ -247,15 +344,21 @@ export default function RecruitmentForm() {
                                 <tr>
                                     <td width="33%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Lương cơ bản:</strong><br>
-                                        <span style="color: #6b7280;">${formData.luongcoban}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.luongcoban
+                                        }</span>
                                     </td>
                                     <td width="33%" style="vertical-align: top;">
                                         <strong style="color: #374151;">KPI:</strong><br>
-                                        <span style="color: #6b7280;">${formData.kpi}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.kpi
+                                        }</span>
                                     </td>
                                     <td width="34%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Tổng thu nhập:</strong><br>
-                                        <span style="color: #6b7280;">${formData.tongthunhapmongmuon}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.tongthunhapmongmuon
+                                        }</span>
                                     </td>
                                 </tr>
                             </table>
@@ -280,21 +383,29 @@ export default function RecruitmentForm() {
                                 <tr>
                                     <td width="50%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Tên trường:</strong><br>
-                                        <span style="color: #6b7280;">${formData.tentruong}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.tentruong
+                                        }</span>
                                     </td>
                                     <td width="50%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Trình độ:</strong><br>
-                                        <span style="color: #6b7280;">${formData.trinhdo}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.trinhdo
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Ngành học:</strong><br>
-                                        <span style="color: #6b7280;">${formData.nganhhoc}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.nganhhoc
+                                        }</span>
                                     </td>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Tình trạng:</strong><br>
-                                        <span style="color: #6b7280;">${formData.tinhtrang}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.tinhtrang
+                                        }</span>
                                     </td>
                                 </tr>
                             </table>
@@ -319,15 +430,21 @@ export default function RecruitmentForm() {
                                 <tr>
                                     <td width="33%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Ngoại ngữ:</strong><br>
-                                        <span style="color: #6b7280;">${formData.ngoaingu}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.ngoaingu
+                                        }</span>
                                     </td>
                                     <td width="33%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Tin học:</strong><br>
-                                        <span style="color: #6b7280;">${formData.tinhoc}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.tinhoc
+                                        }</span>
                                     </td>
                                     <td width="34%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Kỹ năng khác:</strong><br>
-                                        <span style="color: #6b7280;">${formData.kynangkhac}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.kynangkhac
+                                        }</span>
                                     </td>
                                 </tr>
                             </table>
@@ -355,32 +472,45 @@ export default function RecruitmentForm() {
                                     <tr>
                                         <td width="50%" style="vertical-align: top;">
                                             <strong style="color: #374151;">Thời gian:</strong><br>
-                                            <span style="color: #6b7280;">${formData.thoigiancty}</span>
+                                            <span style="color: #6b7280;">${
+                                              formData.thoigiancty
+                                            }</span>
                                         </td>
                                         <td width="50%" style="vertical-align: top;">
                                             <strong style="color: #374151;">Tên công ty:</strong><br>
-                                            <span style="color: #6b7280;">${formData.tencty}</span>
+                                            <span style="color: #6b7280;">${
+                                              formData.tencty
+                                            }</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="vertical-align: top; padding-top: 10px;">
                                             <strong style="color: #374151;">Vị trí:</strong><br>
-                                            <span style="color: #6b7280;">${formData.cviecdalam}</span>
+                                            <span style="color: #6b7280;">${
+                                              formData.cviecdalam
+                                            }</span>
                                         </td>
                                         <td style="vertical-align: top; padding-top: 10px;">
                                             <strong style="color: #374151;">Thu nhập:</strong><br>
-                                            <span style="color: #6b7280;">${formData.thunhapcty}</span>
+                                            <span style="color: #6b7280;">${
+                                              formData.thunhapcty
+                                            }</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" style="vertical-align: top; padding-top: 10px;">
                                             <strong style="color: #374151;">Lý do nghỉ việc:</strong><br>
-                                            <span style="color: #6b7280;">${formData.lydonghi}</span>
+                                            <span style="color: #6b7280;">${
+                                              formData.lydonghi
+                                            }</span>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
 
+                            ${
+                              showSecondCompany && formData.tencty1
+                                ? `
                             <!-- Công ty 2 -->
                             <div style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
                                 <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">Công ty trước đó</h3>
@@ -413,6 +543,9 @@ export default function RecruitmentForm() {
                                     </tr>
                                 </table>
                             </div>
+                            `
+                                : ""
+                            }
                         </td>
                     </tr>
                 </table>
@@ -434,31 +567,43 @@ export default function RecruitmentForm() {
                                 <tr>
                                     <td width="50%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Thời gian bận:</strong><br>
-                                        <span style="color: #6b7280;">${formData.thoigianban}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.thoigianban
+                                        }</span>
                                     </td>
                                     <td width="50%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Có thể làm full 1 ngày:</strong><br>
-                                        <span style="color: #6b7280;">${formData.full1ngay}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.full1ngay
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Có thể xoay ca:</strong><br>
-                                        <span style="color: #6b7280;">${formData.xoayca}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.xoayca
+                                        }</span>
                                     </td>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Vị trí ứng tuyển thêm:</strong><br>
-                                        <span style="color: #6b7280;">${formData.vitriungtuyenthem2}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.vitriungtuyenthem2
+                                        }</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Địa điểm mong muốn 1:</strong><br>
-                                        <span style="color: #6b7280;">${formData.diadiemmongmuonlamviec1}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.diadiemmongmuonlamviec1
+                                        }</span>
                                     </td>
                                     <td style="vertical-align: top; padding-top: 15px;">
                                         <strong style="color: #374151;">Địa điểm mong muốn 2:</strong><br>
-                                        <span style="color: #6b7280;">${formData.diadiemmongmuonlamviec2}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.diadiemmongmuonlamviec2
+                                        }</span>
                                     </td>
                                 </tr>
                             </table>
@@ -483,15 +628,21 @@ export default function RecruitmentForm() {
                                 <tr>
                                     <td width="33%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Kênh tuyển dụng:</strong><br>
-                                        <span style="color: #6b7280;">${formData.kenhtuyendung}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.kenhtuyendung
+                                        }</span>
                                     </td>
                                     <td width="33%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Có bảo hiểm:</strong><br>
-                                        <span style="color: #6b7280;">${formData.baohiem}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.baohiem
+                                        }</span>
                                     </td>
                                     <td width="34%" style="vertical-align: top;">
                                         <strong style="color: #374151;">Ngày có thể thử việc:</strong><br>
-                                        <span style="color: #6b7280;">${formData.ngaythuviec}</span>
+                                        <span style="color: #6b7280;">${
+                                          formData.ngaythuviec
+                                        }</span>
                                     </td>
                                 </tr>
                             </table>
@@ -507,6 +658,7 @@ export default function RecruitmentForm() {
                 <p style="margin: 0; color: #6b7280; font-size: 14px;">
                     📧 Hồ sơ ứng tuyển được gửi tự động<br>
                     📞 Liên hệ: ${formData.dienthoai} | ✉️ ${formData.email}
+                    ${cvFile ? `<br>📎 File CV đính kèm: ${cvFile.name}` : ""}
                 </p>
             </td>
         </tr>
@@ -514,26 +666,42 @@ export default function RecruitmentForm() {
 </body>
 </html> `;
 
+      // Tạo FormData để gửi cả text và file
+      const submitData = new FormData();
+
+      // Thêm tất cả dữ liệu form
+      Object.entries(formData).forEach(([key, value]) => {
+        submitData.append(key, value);
+      });
+
+      // Thêm email content
+      submitData.append("emailContent", emailContent);
+      submitData.append("to", "tuyendungbachlong@gmail.com");
+      submitData.append(
+        "subject",
+        `🎯 Hồ sơ ứng tuyển mới từ ${formData.hovaten || "Ứng viên"} - ${
+          formData.dienthoai || ""
+        }`
+      );
+
+      // Thêm file CV nếu có
+      if (cvFile) {
+        submitData.append("cvFile", cvFile);
+      }
+
       // Gửi email qua API route
       const res = await fetch("/form-recruitment/api/send-email", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: "tuyendungbachlong@gmail.com", // Email nhận
-          subject: `🎯 Hồ sơ ứng tuyển mới từ ${
-            formData.hovaten || "Ứng viên"
-          } - ${formData.dienthoai || ""}`,
-          html: emailContent,
-          formData: formData,
-        }),
+        body: submitData, // Không set Content-Type header khi gửi FormData
       });
 
       const result = await res.json();
 
       if (result.success) {
         toast.success("✅ Gửi hồ sơ thành công!", {
-          description:
-            "Hồ sơ của bạn đã được gửi đến email tuyển dụng. Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.",
+          description: cvFile
+            ? "Hồ sơ và file CV của bạn đã được gửi đến email tuyển dụng dưới dạng file đính kèm. Chúng tôi sẽ liên hệ với bạn sớm nhất có thể."
+            : "Hồ sơ của bạn đã được gửi đến email tuyển dụng. Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.",
           duration: 6000,
         });
 
@@ -584,6 +752,8 @@ export default function RecruitmentForm() {
           baohiem: "",
           ngaythuviec: "",
         });
+        setCvFile(null);
+        setShowSecondCompany(false);
       } else {
         toast.error("❌ Lỗi gửi hồ sơ!", {
           description:
@@ -605,7 +775,7 @@ export default function RecruitmentForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+    <div className="min-h-screen  py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -645,6 +815,7 @@ export default function RecruitmentForm() {
                   onValueChange={(value) =>
                     handleSelectChange("gioitinh", value)
                   }
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn giới tính" />
@@ -657,13 +828,14 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="ngaysinh">Ngày sinh</Label>
+                <Label htmlFor="ngaysinh">Ngày sinh *</Label>
                 <Input
                   id="ngaysinh"
                   name="ngaysinh"
                   type="date"
                   value={formData.ngaysinh}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -681,13 +853,14 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="CMND">CMND/CCCD</Label>
+                <Label htmlFor="CMND">CMND/CCCD *</Label>
                 <Input
                   id="CMND"
                   name="CMND"
                   value={formData.CMND}
                   onChange={handleChange}
                   placeholder="Số CMND/CCCD"
+                  required
                 />
               </div>
 
@@ -733,13 +906,14 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="thuongtru">Địa chỉ thường trú</Label>
+                <Label htmlFor="thuongtru">Địa chỉ thường trú *</Label>
                 <Input
                   id="thuongtru"
                   name="thuongtru"
                   value={formData.thuongtru}
                   onChange={handleChange}
                   placeholder="Nhập địa chỉ thường trú"
+                  required
                 />
               </div>
 
@@ -791,6 +965,82 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
+          {/* Upload CV */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Tải lên CV
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="cvFile">
+                    File CV (PDF, DOC, DOCX - Tối đa 5MB)
+                  </Label>
+                  <div className="flex items-center gap-4">
+                    <div className="relative flex-1">
+                      <Input
+                        id="cvFile"
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                      <Label
+                        htmlFor="cvFile"
+                        className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                      >
+                        <Upload className="h-5 w-5 text-gray-500" />
+                        <span className="text-gray-600">
+                          {cvFile
+                            ? "Thay đổi file CV"
+                            : "Chọn file CV để tải lên"}
+                        </span>
+                      </Label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hiển thị file đã chọn */}
+                {cvFile && (
+                  <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <FileText className="h-5 w-5 text-green-600" />
+                      <div>
+                        <p className="font-medium text-green-800">
+                          {cvFile.name}
+                        </p>
+                        <p className="text-sm text-green-600">
+                          {formatFileSize(cvFile.size)}
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={removeFile}
+                      className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+
+                <div className="text-sm text-gray-500">
+                  <p>• Chấp nhận file: PDF, DOC, DOCX</p>
+                  <p>• Kích thước tối đa: 5MB</p>
+                  <p>
+                    • File CV sẽ được gửi kèm theo email ứng tuyển dưới dạng
+                    file đính kèm
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Giới thiệu bản thân */}
           <Card>
             <CardHeader>
@@ -801,7 +1051,9 @@ export default function RecruitmentForm() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="gioithieubanthan">Tự giới thiệu bản thân</Label>
+                <Label htmlFor="gioithieubanthan">
+                  Tự giới thiệu bản thân *
+                </Label>
                 <Textarea
                   id="gioithieubanthan"
                   name="gioithieubanthan"
@@ -809,6 +1061,7 @@ export default function RecruitmentForm() {
                   onChange={handleChange}
                   placeholder="Hãy giới thiệu về bản thân, kinh nghiệm và điểm mạnh của bạn..."
                   rows={4}
+                  required
                 />
               </div>
 
@@ -859,7 +1112,7 @@ export default function RecruitmentForm() {
 
               <div className="space-y-2">
                 <Label htmlFor="tongthunhapmongmuon">
-                  Tổng thu nhập mong muốn (VNĐ)
+                  Tổng thu nhập mong muốn (VNĐ) *
                 </Label>
                 <Input
                   id="tongthunhapmongmuon"
@@ -867,6 +1120,7 @@ export default function RecruitmentForm() {
                   value={formData.tongthunhapmongmuon}
                   onChange={handleChange}
                   placeholder="Tổng thu nhập mong muốn"
+                  required
                 />
               </div>
             </CardContent>
@@ -882,23 +1136,25 @@ export default function RecruitmentForm() {
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="tentruong">Tên trường</Label>
+                <Label htmlFor="tentruong">Tên trường *</Label>
                 <Input
                   id="tentruong"
                   name="tentruong"
                   value={formData.tentruong}
                   onChange={handleChange}
                   placeholder="Tên trường đã học"
+                  required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="trinhdo">Trình độ</Label>
+                <Label htmlFor="trinhdo">Trình độ *</Label>
                 <Select
                   value={formData.trinhdo}
                   onValueChange={(value) =>
                     handleSelectChange("trinhdo", value)
                   }
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn trình độ" />
@@ -1058,71 +1314,94 @@ export default function RecruitmentForm() {
                 </div>
               </div>
 
-              <Separator />
-
-              {/* Công ty 2 */}
-              <div>
-                <h4 className="font-semibold mb-4">
-                  Công ty trước đó (nếu có)
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="thoigiancty1">Thời gian làm việc</Label>
-                    <Input
-                      id="thoigiancty1"
-                      name="thoigiancty1"
-                      value={formData.thoigiancty1}
-                      onChange={handleChange}
-                      placeholder="01/2018 - 12/2019"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="tencty1">Tên công ty</Label>
-                    <Input
-                      id="tencty1"
-                      name="tencty1"
-                      value={formData.tencty1}
-                      onChange={handleChange}
-                      placeholder="Tên công ty"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="cviecdalam1">Công việc đã làm</Label>
-                    <Input
-                      id="cviecdalam1"
-                      name="cviecdalam1"
-                      value={formData.cviecdalam1}
-                      onChange={handleChange}
-                      placeholder="Vị trí/Chức vụ"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="thunhapcty1">Thu nhập (VNĐ)</Label>
-                    <Input
-                      id="thunhapcty1"
-                      name="thunhapcty1"
-                      value={formData.thunhapcty1}
-                      onChange={handleChange}
-                      placeholder="Thu nhập tại công ty"
-                    />
-                  </div>
-
-                  <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="lydonghi1">Lý do nghỉ việc</Label>
-                    <Textarea
-                      id="lydonghi1"
-                      name="lydonghi1"
-                      value={formData.lydonghi1}
-                      onChange={handleChange}
-                      placeholder="Lý do nghỉ việc tại công ty này"
-                      rows={2}
-                    />
-                  </div>
-                </div>
+              {/* Nút thêm/ẩn công ty thứ 2 */}
+              <div className="flex justify-center">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={toggleSecondCompany}
+                  className="flex items-center gap-2"
+                >
+                  {showSecondCompany ? (
+                    <>
+                      <Minus className="h-4 w-4" />
+                      Ẩn công ty thứ 2
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="h-4 w-4" />
+                      Thêm công ty thứ 2
+                    </>
+                  )}
+                </Button>
               </div>
+
+              {/* Công ty 2 - Chỉ hiển thị khi showSecondCompany = true */}
+              {showSecondCompany && (
+                <>
+                  <Separator />
+                  <div>
+                    <h4 className="font-semibold mb-4">Công ty trước đó</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="thoigiancty1">Thời gian làm việc</Label>
+                        <Input
+                          id="thoigiancty1"
+                          name="thoigiancty1"
+                          value={formData.thoigiancty1}
+                          onChange={handleChange}
+                          placeholder="01/2018 - 12/2019"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="tencty1">Tên công ty</Label>
+                        <Input
+                          id="tencty1"
+                          name="tencty1"
+                          value={formData.tencty1}
+                          onChange={handleChange}
+                          placeholder="Tên công ty"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="cviecdalam1">Công việc đã làm</Label>
+                        <Input
+                          id="cviecdalam1"
+                          name="cviecdalam1"
+                          value={formData.cviecdalam1}
+                          onChange={handleChange}
+                          placeholder="Vị trí/Chức vụ"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="thunhapcty1">Thu nhập (VNĐ)</Label>
+                        <Input
+                          id="thunhapcty1"
+                          name="thunhapcty1"
+                          value={formData.thunhapcty1}
+                          onChange={handleChange}
+                          placeholder="Thu nhập tại công ty"
+                        />
+                      </div>
+
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="lydonghi1">Lý do nghỉ việc</Label>
+                        <Textarea
+                          id="lydonghi1"
+                          name="lydonghi1"
+                          value={formData.lydonghi1}
+                          onChange={handleChange}
+                          placeholder="Lý do nghỉ việc tại công ty này"
+                          rows={2}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
@@ -1147,12 +1426,13 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="full1ngay">Có thể làm full 1 ngày</Label>
+                <Label htmlFor="full1ngay">Có thể làm full 1 ngày *</Label>
                 <Select
                   value={formData.full1ngay}
                   onValueChange={(value) =>
                     handleSelectChange("full1ngay", value)
                   }
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn" />
@@ -1165,10 +1445,11 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="xoayca">Có thể xoay ca</Label>
+                <Label htmlFor="xoayca">Có thể xoay ca *</Label>
                 <Select
                   value={formData.xoayca}
                   onValueChange={(value) => handleSelectChange("xoayca", value)}
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn" />
@@ -1195,7 +1476,7 @@ export default function RecruitmentForm() {
 
               <div className="space-y-2">
                 <Label htmlFor="diadiemmongmuonlamviec1">
-                  Địa điểm mong muốn 1
+                  Địa điểm mong muốn 1 *
                 </Label>
                 <Input
                   id="diadiemmongmuonlamviec1"
@@ -1203,6 +1484,7 @@ export default function RecruitmentForm() {
                   value={formData.diadiemmongmuonlamviec1}
                   onChange={handleChange}
                   placeholder="Địa điểm làm việc ưu tiên"
+                  required
                 />
               </div>
 
@@ -1231,12 +1513,13 @@ export default function RecruitmentForm() {
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="kenhtuyendung">Kênh tuyển dụng</Label>
+                <Label htmlFor="kenhtuyendung">Kênh tuyển dụng *</Label>
                 <Select
                   value={formData.kenhtuyendung}
                   onValueChange={(value) =>
                     handleSelectChange("kenhtuyendung", value)
                   }
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Biết tin qua đâu?" />
@@ -1270,13 +1553,14 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="ngaythuviec">Ngày có thể thử việc</Label>
+                <Label htmlFor="ngaythuviec">Ngày có thể thử việc *</Label>
                 <Input
                   id="ngaythuviec"
                   name="ngaythuviec"
                   type="date"
                   value={formData.ngaythuviec}
                   onChange={handleChange}
+                  required
                 />
               </div>
             </CardContent>

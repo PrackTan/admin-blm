@@ -2,7 +2,13 @@ import { type NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
 export async function POST(request: NextRequest) {
     try {
-        const { to, subject, html, formData } = await request.json()
+        const formData = await request.formData();
+
+        const to = formData.get("to") as string;
+        const subject = formData.get("subject") as string;
+        const html = formData.get("emailContent") as string;
+        const cvFile = formData.get("cvFile") as File | null;
+
         if (!to || !subject || !html) {
             return NextResponse.json(
                 { success: false, message: "Thiếu dữ liệu email." },
@@ -16,10 +22,10 @@ export async function POST(request: NextRequest) {
                 pass: process.env.EMAIL_PASS,
             },
         });
-        // Mô phỏng gửi email thành công
-        console.log("📧 Sending email to:", to)
-        console.log("📋 Subject:", subject)
-        console.log("📄 Form data:", formData)
+        // // Mô phỏng gửi email thành công
+        // console.log("📧 Sending email to:", to)
+        // console.log("📋 Subject:", subject)
+        // console.log("📄 Form data:", formData)
 
         // Mô phỏng delay gửi email
         // await new Promise((resolve) => setTimeout(resolve, 2000))
@@ -28,6 +34,12 @@ export async function POST(request: NextRequest) {
             to,
             subject,
             html,
+            attachments: [
+                {
+                    filename: cvFile?.name || "cv.pdf",
+                    content: cvFile ? Buffer.from(await cvFile.arrayBuffer()) : undefined,
+                },
+            ],
         });
 
         // return NextResponse.json({ success: true });
