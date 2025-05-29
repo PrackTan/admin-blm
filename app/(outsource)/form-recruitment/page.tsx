@@ -614,12 +614,6 @@ export default function RecruitmentForm() {
           <p className="text-gray-600">
             Vui lòng điền đầy đủ thông tin để ứng tuyển vào vị trí mong muốn
           </p>
-          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-sm text-green-700">
-              📧 Hồ sơ sẽ được gửi trực tiếp đến email:{" "}
-              <strong>nguyenchauhuutan@gmail.com</strong>
-            </p>
-          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
