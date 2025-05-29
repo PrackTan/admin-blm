@@ -657,7 +657,8 @@ export default function RecruitmentForm() {
             <td style="padding: 30px; text-align: center; background-color: #f8fafc; border-top: 2px solid #e2e8f0;">
                 <p style="margin: 0; color: #6b7280; font-size: 14px;">
                     📧 Hồ sơ ứng tuyển được gửi tự động<br>
-                    📞 Liên hệ: (028) 22.68.68.68 | ✉️ tuyendungbachlong@gmail.com
+                    📞 Liên hệ: ${formData.dienthoai} | ✉️ ${formData.email}
+                    ${cvFile ? `<br>📎 File CV đính kèm: ${cvFile.name}` : ""}
                 </p>
             </td>
         </tr>
@@ -762,6 +763,7 @@ export default function RecruitmentForm() {
         });
       }
     } catch (error) {
+      console.error("Error:", error);
       toast.error("❌ Lỗi kết nối!", {
         description:
           "Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng và thử lại.",
@@ -863,34 +865,37 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="ngaycap">Ngày cấp</Label>
+                <Label htmlFor="ngaycap">Ngày cấp *</Label>
                 <Input
                   id="ngaycap"
                   name="ngaycap"
                   type="date"
                   value={formData.ngaycap}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="noicap">Nơi cấp</Label>
+                <Label htmlFor="noicap">Nơi cấp *</Label>
                 <Input
                   id="noicap"
                   name="noicap"
                   value={formData.noicap}
                   onChange={handleChange}
                   placeholder="Nơi cấp CMND/CCCD"
+                  required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="honnhan">Tình trạng hôn nhân</Label>
+                <Label htmlFor="honnhan">Tình trạng hôn nhân *</Label>
                 <Select
                   value={formData.honnhan}
                   onValueChange={(value) =>
                     handleSelectChange("honnhan", value)
                   }
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn tình trạng" />
@@ -929,35 +934,38 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="facebook">Facebook</Label>
+                <Label htmlFor="facebook">Facebook *</Label>
                 <Input
                   id="facebook"
                   name="facebook"
                   value={formData.facebook}
                   onChange={handleChange}
                   placeholder="Link Facebook cá nhân"
+                  required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="chieucao">Chiều cao (cm)</Label>
+                <Label htmlFor="chieucao">Chiều cao (cm) *</Label>
                 <Input
                   id="chieucao"
                   name="chieucao"
                   value={formData.chieucao}
                   onChange={handleChange}
                   placeholder="Chiều cao"
+                  required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="cannang">Cân nặng (kg)</Label>
+                <Label htmlFor="cannang">Cân nặng (kg) *</Label>
                 <Input
                   id="cannang"
                   name="cannang"
                   value={formData.cannang}
                   onChange={handleChange}
                   placeholder="Cân nặng"
+                  required
                 />
               </div>
             </CardContent>
@@ -1087,24 +1095,26 @@ export default function RecruitmentForm() {
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="luongcoban">Lương cơ bản (VNĐ)</Label>
+                <Label htmlFor="luongcoban">Lương cơ bản (VNĐ) *</Label>
                 <Input
                   id="luongcoban"
                   name="luongcoban"
                   value={formData.luongcoban}
                   onChange={handleChange}
                   placeholder="Lương cơ bản mong muốn"
+                  required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="kpi">KPI (VNĐ)</Label>
+                <Label htmlFor="kpi">KPI (VNĐ) *</Label>
                 <Input
                   id="kpi"
                   name="kpi"
                   value={formData.kpi}
                   onChange={handleChange}
                   placeholder="KPI mong muốn"
+                  required
                 />
               </div>
 
@@ -1169,23 +1179,25 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="nganhhoc">Ngành học</Label>
+                <Label htmlFor="nganhhoc">Ngành học *</Label>
                 <Input
                   id="nganhhoc"
                   name="nganhhoc"
                   value={formData.nganhhoc}
                   onChange={handleChange}
                   placeholder="Ngành học/Chuyên môn"
+                  required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="tinhtrang">Tình trạng học tập</Label>
+                <Label htmlFor="tinhtrang">Tình trạng học tập *</Label>
                 <Select
                   value={formData.tinhtrang}
                   onValueChange={(value) =>
                     handleSelectChange("tinhtrang", value)
                   }
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn tình trạng" />
@@ -1255,51 +1267,55 @@ export default function RecruitmentForm() {
                 <h4 className="font-semibold mb-4">Công ty gần nhất</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="thoigiancty">Thời gian làm việc</Label>
+                    <Label htmlFor="thoigiancty">Thời gian làm việc *</Label>
                     <Input
                       id="thoigiancty"
                       name="thoigiancty"
                       value={formData.thoigiancty}
                       onChange={handleChange}
                       placeholder="01/2020 - 12/2023"
+                      required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="tencty">Tên công ty</Label>
+                    <Label htmlFor="tencty">Tên công ty *</Label>
                     <Input
                       id="tencty"
                       name="tencty"
                       value={formData.tencty}
                       onChange={handleChange}
                       placeholder="Tên công ty"
+                      required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="cviecdalam">Công việc đã làm</Label>
+                    <Label htmlFor="cviecdalam">Công việc đã làm *</Label>
                     <Input
                       id="cviecdalam"
                       name="cviecdalam"
                       value={formData.cviecdalam}
                       onChange={handleChange}
                       placeholder="Vị trí/Chức vụ"
+                      required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="thunhapcty">Thu nhập (VNĐ)</Label>
+                    <Label htmlFor="thunhapcty">Thu nhập (VNĐ) *</Label>
                     <Input
                       id="thunhapcty"
                       name="thunhapcty"
                       value={formData.thunhapcty}
                       onChange={handleChange}
                       placeholder="Thu nhập tại công ty"
+                      required
                     />
                   </div>
 
                   <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="lydonghi">Lý do nghỉ việc</Label>
+                    <Label htmlFor="lydonghi">Lý do nghỉ việc *</Label>
                     <Textarea
                       id="lydonghi"
                       name="lydonghi"
@@ -1307,6 +1323,7 @@ export default function RecruitmentForm() {
                       onChange={handleChange}
                       placeholder="Lý do nghỉ việc tại công ty này"
                       rows={2}
+                      required
                     />
                   </div>
                 </div>
@@ -1413,13 +1430,14 @@ export default function RecruitmentForm() {
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="thoigianban">Thời gian bận</Label>
+                <Label htmlFor="thoigianban">Thời gian bận *</Label>
                 <Input
                   id="thoigianban"
                   name="thoigianban"
                   value={formData.thoigianban}
                   onChange={handleChange}
                   placeholder="Thời gian không thể làm việc"
+                  required
                 />
               </div>
 
@@ -1463,13 +1481,123 @@ export default function RecruitmentForm() {
                 <Label htmlFor="vitriungtuyenthem2">
                   Vị trí ứng tuyển thêm
                 </Label>
-                <Input
-                  id="vitriungtuyenthem2"
-                  name="vitriungtuyenthem2"
+                <Select
                   value={formData.vitriungtuyenthem2}
-                  onChange={handleChange}
-                  placeholder="Vị trí khác muốn ứng tuyển"
-                />
+                  onValueChange={(value) =>
+                    handleSelectChange("vitriungtuyenthem2", value)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Quản lý/phó quản lý cửa hàng" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Quản lý/phó quản lý cửa hàng">
+                      Quản lý/phó quản lý cửa hàng
+                    </SelectItem>
+                    <SelectItem value="Nhân viên kế toán bán hàng">
+                      Nhân viên kế toán bán hàng
+                    </SelectItem>
+                    <SelectItem value="Nhân viên thu ngân">
+                      Nhân viên thu ngân
+                    </SelectItem>
+                    <SelectItem value="Nhân viên Kế Toán Kho – Linh Kiện Sửa Chữa">
+                      Nhân viên Kế Toán Kho – Linh Kiện Sửa Chữa
+                    </SelectItem>
+                    <SelectItem value="Nhân viên tư vấn bán hàng">
+                      Nhân viên tư vấn bán hàng
+                    </SelectItem>
+                    <SelectItem value="Nhân viên tiếp nhận bảo hành">
+                      Nhân viên tiếp nhận bảo hành
+                    </SelectItem>
+                    <SelectItem value="Nhân viên kỹ thuật phần mềm">
+                      Nhân viên kỹ thuật phần mềm
+                    </SelectItem>
+                    <SelectItem value="Nhân viên kỹ thuật thay thế linh kiện">
+                      Nhân viên kỹ thuật thay thế linh kiện
+                    </SelectItem>
+                    <SelectItem value="Nhân viên kỹ thuật sửa chữa mainboard">
+                      Nhân viên kỹ thuật sửa chữa mainboard
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên kế toán nội bộ">
+                      Chuyên viên kế toán nội bộ
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên kế toán thuế">
+                      Chuyên viên kế toán thuế
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên kế toán kiểm toán">
+                      Chuyên viên kế toán kiểm toán
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên kế toán tài chính">
+                      Chuyên viên kế toán tài chính
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên kế toán thanh toán">
+                      Chuyên viên kế toán thanh toán
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên kế toán công nợ">
+                      Chuyên viên kế toán công nợ
+                    </SelectItem>
+                    <SelectItem value="Trưởng phòng media">
+                      Trưởng phòng media
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên digital marketing">
+                      Chuyên viên digital marketing
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên sáng tạo nội dung - reviewer">
+                      Chuyên viên sáng tạo nội dung - reviewer
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên brand marketing">
+                      Chuyên viên brand marketing
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên social marketing">
+                      Chuyên viên social marketing
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên content SEO">
+                      Chuyên viên content SEO
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên video editor">
+                      Chuyên viên video editor
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên graphic designer">
+                      Chuyên viên graphic designer
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên vận hành sàn TMĐT (Shopee-Tiktok)">
+                      Chuyên viên vận hành sàn TMĐT (Shopee-Tiktok)
+                    </SelectItem>
+                    <SelectItem value="Trưởng phòng IT">
+                      Trưởng phòng IT
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên quản trị Website">
+                      Chuyên viên quản trị Website
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên lập trình Website">
+                      Chuyên viên lập trình Website
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên ngành hàng Điện thoại/MTB/Laptop">
+                      Chuyên viên ngành hàng Điện thoại/MTB/Laptop
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên ngành hàng phụ kiện - dịch vụ tiện ích">
+                      Chuyên viên ngành hàng phụ kiện - dịch vụ tiện ích
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên hành chính Chuyên sự">
+                      Chuyên viên hành chính Chuyên sự
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên hành chính văn phòng">
+                      Chuyên viên hành chính văn phòng
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên giám sát">
+                      Chuyên viên giám sát
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên đào tạo">
+                      Chuyên viên đào tạo
+                    </SelectItem>
+                    <SelectItem value="Chuyên viên call center">
+                      Chuyên viên call center
+                    </SelectItem>
+                    <SelectItem value="Nhân viên Tiếp Đón Khách Hàng (Bảo Vệ)">
+                      Nhân viên Tiếp Đón Khách Hàng (Bảo Vệ)
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
@@ -1488,7 +1616,7 @@ export default function RecruitmentForm() {
 
               <div className="space-y-2">
                 <Label htmlFor="diadiemmongmuonlamviec2">
-                  Địa điểm mong muốn 2
+                  Địa điểm mong muốn 2 *
                 </Label>
                 <Input
                   id="diadiemmongmuonlamviec2"
@@ -1496,6 +1624,7 @@ export default function RecruitmentForm() {
                   value={formData.diadiemmongmuonlamviec2}
                   onChange={handleChange}
                   placeholder="Địa điểm làm việc thứ 2"
+                  required
                 />
               </div>
             </CardContent>
@@ -1533,12 +1662,13 @@ export default function RecruitmentForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="baohiem">Có bảo hiểm</Label>
+                <Label htmlFor="baohiem">Có bảo hiểm *</Label>
                 <Select
                   value={formData.baohiem}
                   onValueChange={(value) =>
                     handleSelectChange("baohiem", value)
                   }
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn" />
