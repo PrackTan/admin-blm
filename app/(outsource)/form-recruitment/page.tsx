@@ -657,8 +657,7 @@ export default function RecruitmentForm() {
             <td style="padding: 30px; text-align: center; background-color: #f8fafc; border-top: 2px solid #e2e8f0;">
                 <p style="margin: 0; color: #6b7280; font-size: 14px;">
                     📧 Hồ sơ ứng tuyển được gửi tự động<br>
-                    📞 Liên hệ: ${formData.dienthoai} | ✉️ ${formData.email}
-                    ${cvFile ? `<br>📎 File CV đính kèm: ${cvFile.name}` : ""}
+                    📞 Liên hệ: (028) 22.68.68.68 | ✉️ tuyendungbachlong@gmail.com
                 </p>
             </td>
         </tr>
@@ -763,7 +762,6 @@ export default function RecruitmentForm() {
         });
       }
     } catch (error) {
-      console.error("Error:", error);
       toast.error("❌ Lỗi kết nối!", {
         description:
           "Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng và thử lại.",

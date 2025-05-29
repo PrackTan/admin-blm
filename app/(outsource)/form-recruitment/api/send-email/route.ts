@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
             message: "Email đã được gửi thành công!",
         })
     } catch (error) {
-        console.error("Error sending email:", error)
+        // console.error("Error sending email:", error)
         return NextResponse.json(
             {
                 success: false,
