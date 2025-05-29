@@ -26,11 +26,9 @@ import {
   Users,
   Loader2,
 } from "lucide-react";
-import { Toaster as Sonner, toast, ToasterProps } from "sonner";
+import { toast } from "sonner";
 
 export default function RecruitmentForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [formData, setFormData] = useState({
     hovaten: "",
     gioitinh: "",
@@ -78,6 +76,8 @@ export default function RecruitmentForm() {
     ngaythuviec: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -100,23 +100,444 @@ export default function RecruitmentForm() {
     setIsSubmitting(true);
 
     try {
-      // Gửi đến API route mới để xử lý email
-      const res = await fetch("/api/send-email", {
+      // Tạo nội dung email HTML đẹp
+      const emailContent = `
+                <!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Ứng Tuyển - Email Version</title>
+</head>
+<body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; background-color: #f5f5f5;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 800px; margin: 0 auto; background-color: #ffffff;">
+        <!-- Header -->
+        <tr>
+            <td style="padding: 30px; text-align: center; background-color: #4f46e5; color: white;">
+                <h1 style="margin: 0; font-size: 28px; font-weight: bold;">Form Ứng Tuyển</h1>
+                <p style="margin: 10px 0 0 0; font-size: 16px;">Thông tin ứng viên</p>
+            </td>
+        </tr>
+        <!-- Thông tin cá nhân -->
+        <tr>
+            <td style="padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">👤 Thông tin cá nhân</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px;">
+                            <table width="100%" cellpadding="8" cellspacing="0">
+                                <tr>
+                                    <td width="50%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Họ và tên:</strong><br>
+                                        <span style="color: #6b7280;">${formData.hovaten}</span>
+                                    </td>
+                                    <td width="50%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Giới tính:</strong><br>
+                                        <span style="color: #6b7280;">${formData.gioitinh}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Ngày sinh:</strong><br>
+                                        <span style="color: #6b7280;">${formData.ngaysinh}</span>
+                                    </td>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Số điện thoại:</strong><br>
+                                        <span style="color: #6b7280;">${formData.dienthoai}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">CMND/CCCD:</strong><br>
+                                        <span style="color: #6b7280;">${formData.CMND}</span>
+                                    </td>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Ngày cấp:</strong><br>
+                                        <span style="color: #6b7280;">${formData.ngaycap}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Nơi cấp:</strong><br>
+                                        <span style="color: #6b7280;">${formData.noicap}</span>
+                                    </td>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Tình trạng hôn nhân:</strong><br>
+                                        <span style="color: #6b7280;">${formData.honnhan}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Địa chỉ thường trú:</strong><br>
+                                        <span style="color: #6b7280;">${formData.thuongtru}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Email:</strong><br>
+                                        <span style="color: #6b7280;">${formData.email}</span>
+                                    </td>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Facebook:</strong><br>
+                                        <span style="color: #6b7280;">${formData.facebook}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Chiều cao:</strong><br>
+                                        <span style="color: #6b7280;">${formData.chieucao}</span>
+                                    </td>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Cân nặng:</strong><br>
+                                        <span style="color: #6b7280;">${formData.cannang}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Giới thiệu bản thân -->
+        <tr>
+            <td style="padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">👥 Giới thiệu bản thân</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px;">
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #374151;">Tự giới thiệu bản thân:</strong><br>
+                                <span style="color: #6b7280; line-height: 1.6;">
+                                    ${formData.gioithieubanthan}
+                                </span>
+                            </div>
+                            <div>
+                                <strong style="color: #374151;">Mục tiêu nghề nghiệp:</strong><br>
+                                <span style="color: #6b7280; line-height: 1.6;">
+                                    ${formData.muctieunghenghiep}
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Mức lương mong muốn -->
+        <tr>
+            <td style="padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">💰 Mức lương mong muốn</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px;">
+                            <table width="100%" cellpadding="8" cellspacing="0">
+                                <tr>
+                                    <td width="33%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Lương cơ bản:</strong><br>
+                                        <span style="color: #6b7280;">${formData.luongcoban}</span>
+                                    </td>
+                                    <td width="33%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">KPI:</strong><br>
+                                        <span style="color: #6b7280;">${formData.kpi}</span>
+                                    </td>
+                                    <td width="34%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Tổng thu nhập:</strong><br>
+                                        <span style="color: #6b7280;">${formData.tongthunhapmongmuon}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Trình độ học vấn -->
+        <tr>
+            <td style="padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">🎓 Trình độ học vấn</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px;">
+                            <table width="100%" cellpadding="8" cellspacing="0">
+                                <tr>
+                                    <td width="50%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Tên trường:</strong><br>
+                                        <span style="color: #6b7280;">${formData.tentruong}</span>
+                                    </td>
+                                    <td width="50%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Trình độ:</strong><br>
+                                        <span style="color: #6b7280;">${formData.trinhdo}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Ngành học:</strong><br>
+                                        <span style="color: #6b7280;">${formData.nganhhoc}</span>
+                                    </td>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Tình trạng:</strong><br>
+                                        <span style="color: #6b7280;">${formData.tinhtrang}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Kỹ năng -->
+        <tr>
+            <td style="padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">⚡ Kỹ năng</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px;">
+                            <table width="100%" cellpadding="8" cellspacing="0">
+                                <tr>
+                                    <td width="33%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Ngoại ngữ:</strong><br>
+                                        <span style="color: #6b7280;">${formData.ngoaingu}</span>
+                                    </td>
+                                    <td width="33%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Tin học:</strong><br>
+                                        <span style="color: #6b7280;">${formData.tinhoc}</span>
+                                    </td>
+                                    <td width="34%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Kỹ năng khác:</strong><br>
+                                        <span style="color: #6b7280;">${formData.kynangkhac}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Kinh nghiệm làm việc -->
+        <tr>
+            <td style="padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">💼 Kinh nghiệm làm việc</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px;">
+                            <!-- Công ty 1 -->
+                            <div style="margin-bottom: 25px; padding: 15px; background-color: #f9fafb; border-radius: 8px;">
+                                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">Công ty gần nhất</h3>
+                                <table width="100%" cellpadding="5" cellspacing="0">
+                                    <tr>
+                                        <td width="50%" style="vertical-align: top;">
+                                            <strong style="color: #374151;">Thời gian:</strong><br>
+                                            <span style="color: #6b7280;">${formData.thoigiancty}</span>
+                                        </td>
+                                        <td width="50%" style="vertical-align: top;">
+                                            <strong style="color: #374151;">Tên công ty:</strong><br>
+                                            <span style="color: #6b7280;">${formData.tencty}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: top; padding-top: 10px;">
+                                            <strong style="color: #374151;">Vị trí:</strong><br>
+                                            <span style="color: #6b7280;">${formData.cviecdalam}</span>
+                                        </td>
+                                        <td style="vertical-align: top; padding-top: 10px;">
+                                            <strong style="color: #374151;">Thu nhập:</strong><br>
+                                            <span style="color: #6b7280;">${formData.thunhapcty}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="vertical-align: top; padding-top: 10px;">
+                                            <strong style="color: #374151;">Lý do nghỉ việc:</strong><br>
+                                            <span style="color: #6b7280;">${formData.lydonghi}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Công ty 2 -->
+                            <div style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
+                                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">Công ty trước đó</h3>
+                                <table width="100%" cellpadding="5" cellspacing="0">
+                                    <tr>
+                                        <td width="50%" style="vertical-align: top;">
+                                            <strong style="color: #374151;">Thời gian:</strong><br>
+                                            <span style="color: #6b7280;">${formData.thoigiancty1}</span>
+                                        </td>
+                                        <td width="50%" style="vertical-align: top;">
+                                            <strong style="color: #374151;">Tên công ty:</strong><br>
+                                            <span style="color: #6b7280;">${formData.tencty1}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: top; padding-top: 10px;">
+                                            <strong style="color: #374151;">Vị trí:</strong><br>
+                                            <span style="color: #6b7280;">${formData.cviecdalam1}</span>
+                                        </td>
+                                        <td style="vertical-align: top; padding-top: 10px;">
+                                            <strong style="color: #374151;">Thu nhập:</strong><br>
+                                            <span style="color: #6b7280;">${formData.thunhapcty1}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="vertical-align: top; padding-top: 10px;">
+                                            <strong style="color: #374151;">Lý do nghỉ việc:</strong><br>
+                                            <span style="color: #6b7280;">${formData.lydonghi1}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Thông tin công việc mong muốn -->
+        <tr>
+            <td style="padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">📍 Thông tin công việc mong muốn</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px;">
+                            <table width="100%" cellpadding="8" cellspacing="0">
+                                <tr>
+                                    <td width="50%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Thời gian bận:</strong><br>
+                                        <span style="color: #6b7280;">${formData.thoigianban}</span>
+                                    </td>
+                                    <td width="50%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Có thể làm full 1 ngày:</strong><br>
+                                        <span style="color: #6b7280;">${formData.full1ngay}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Có thể xoay ca:</strong><br>
+                                        <span style="color: #6b7280;">${formData.xoayca}</span>
+                                    </td>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Vị trí ứng tuyển thêm:</strong><br>
+                                        <span style="color: #6b7280;">${formData.vitriungtuyenthem2}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Địa điểm mong muốn 1:</strong><br>
+                                        <span style="color: #6b7280;">${formData.diadiemmongmuonlamviec1}</span>
+                                    </td>
+                                    <td style="vertical-align: top; padding-top: 15px;">
+                                        <strong style="color: #374151;">Địa điểm mong muốn 2:</strong><br>
+                                        <span style="color: #6b7280;">${formData.diadiemmongmuonlamviec2}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Thông tin khác -->
+        <tr>
+            <td style="padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">⏰ Thông tin khác</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px;">
+                            <table width="100%" cellpadding="8" cellspacing="0">
+                                <tr>
+                                    <td width="33%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Kênh tuyển dụng:</strong><br>
+                                        <span style="color: #6b7280;">${formData.kenhtuyendung}</span>
+                                    </td>
+                                    <td width="33%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Có bảo hiểm:</strong><br>
+                                        <span style="color: #6b7280;">${formData.baohiem}</span>
+                                    </td>
+                                    <td width="34%" style="vertical-align: top;">
+                                        <strong style="color: #374151;">Ngày có thể thử việc:</strong><br>
+                                        <span style="color: #6b7280;">${formData.ngaythuviec}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+            <td style="padding: 30px; text-align: center; background-color: #f8fafc; border-top: 2px solid #e2e8f0;">
+                <p style="margin: 0; color: #6b7280; font-size: 14px;">
+                    📧 Hồ sơ ứng tuyển được gửi tự động<br>
+                    📞 Liên hệ: ${formData.dienthoai} | ✉️ ${formData.email}
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html> `;
+
+      // Gửi email qua API route
+      const res = await fetch("/form-recruitment/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          to: "tuyendungbachlong@gmail.com", // Email nhận
+          subject: `🎯 Hồ sơ ứng tuyển mới từ ${
+            formData.hovaten || "Ứng viên"
+          } - ${formData.dienthoai || ""}`,
+          html: emailContent,
+          formData: formData,
+        }),
       });
 
       const result = await res.json();
 
       if (result.success) {
-        toast("Thành công!", {
+        toast.success("✅ Gửi hồ sơ thành công!", {
           description:
-            "Hồ sơ đã được gửi thành công. Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.",
-          duration: 5000,
+            "Hồ sơ của bạn đã được gửi đến email tuyển dụng. Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.",
+          duration: 6000,
         });
 
-        // Reset form
+        // Reset form sau khi gửi thành công
         setFormData({
           hovaten: "",
           gioitinh: "",
@@ -164,16 +585,18 @@ export default function RecruitmentForm() {
           ngaythuviec: "",
         });
       } else {
-        toast("Lỗi!", {
+        toast.error("❌ Lỗi gửi hồ sơ!", {
           description:
-            result.message || "Có lỗi xảy ra khi gửi hồ sơ. Vui lòng thử lại.",
+            result.message ||
+            "Có lỗi xảy ra khi gửi hồ sơ. Vui lòng thử lại sau.",
           duration: 5000,
         });
       }
     } catch (error) {
-      toast("Lỗi!", {
+      console.error("Error:", error);
+      toast.error("❌ Lỗi kết nối!", {
         description:
-          "Có lỗi xảy ra khi gửi hồ sơ. Vui lòng kiểm tra kết nối mạng và thử lại.",
+          "Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng và thử lại.",
         duration: 5000,
       });
     } finally {
@@ -191,6 +614,12 @@ export default function RecruitmentForm() {
           <p className="text-gray-600">
             Vui lòng điền đầy đủ thông tin để ứng tuyển vào vị trí mong muốn
           </p>
+          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+            <p className="text-sm text-green-700">
+              📧 Hồ sơ sẽ được gửi trực tiếp đến email:{" "}
+              <strong>nguyenchauhuutan@gmail.com</strong>
+            </p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
@@ -870,7 +1299,7 @@ export default function RecruitmentForm() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Đang gửi...
+                  Đang gửi hồ sơ...
                 </>
               ) : (
                 <>
