@@ -1477,10 +1477,8 @@ export default function RecruitmentForm() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="vitriungtuyenthem2">
-                  Vị trí ứng tuyển thêm
-                </Label>
+              <div className="space-y-2 h-min">
+                <Label htmlFor="vitriungtuyenthem2">Vị trí ứng tuyển</Label>
                 <Select
                   value={formData.vitriungtuyenthem2}
                   onValueChange={(value) =>
@@ -1490,7 +1488,7 @@ export default function RecruitmentForm() {
                   <SelectTrigger>
                     <SelectValue placeholder="Quản lý/phó quản lý cửa hàng" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="max-h-60 overflow-y-auto">
                     <SelectItem value="Quản lý/phó quản lý cửa hàng">
                       Quản lý/phó quản lý cửa hàng
                     </SelectItem>
