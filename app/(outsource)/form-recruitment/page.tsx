@@ -24,9 +24,13 @@ import {
   DollarSign,
   Mail,
   Users,
+  Loader2,
 } from "lucide-react";
+import { Toaster as Sonner, toast, ToasterProps } from "sonner";
 
 export default function RecruitmentForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
     hovaten: "",
     gioitinh: "",
@@ -93,19 +97,25 @@ export default function RecruitmentForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
-      const res = await fetch(
-        "https://vieclam.bachlongmobile.com/wp-json/custom-api/v1/nop-ho-so",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+      // Gửi đến API route mới để xử lý email
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-      if (res.ok) {
-        alert("Nộp hồ sơ thành công!");
+      const result = await res.json();
+
+      if (result.success) {
+        toast("Thành công!", {
+          description:
+            "Hồ sơ đã được gửi thành công. Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.",
+          duration: 5000,
+        });
+
         // Reset form
         setFormData({
           hovaten: "",
@@ -154,15 +164,25 @@ export default function RecruitmentForm() {
           ngaythuviec: "",
         });
       } else {
-        alert("Gửi không thành công!");
+        toast("Lỗi!", {
+          description:
+            result.message || "Có lỗi xảy ra khi gửi hồ sơ. Vui lòng thử lại.",
+          duration: 5000,
+        });
       }
     } catch (error) {
-      alert("Có lỗi xảy ra khi gửi hồ sơ!");
+      toast("Lỗi!", {
+        description:
+          "Có lỗi xảy ra khi gửi hồ sơ. Vui lòng kiểm tra kết nối mạng và thử lại.",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen  py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -841,9 +861,23 @@ export default function RecruitmentForm() {
 
           {/* Submit button */}
           <div className="flex justify-center pt-6">
-            <Button type="submit" size="lg" className="px-12 py-3 text-lg">
-              <Mail className="mr-2 h-5 w-5" />
-              Gửi hồ sơ ứng tuyển
+            <Button
+              type="submit"
+              size="lg"
+              className="px-12 py-3 text-lg"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Đang gửi...
+                </>
+              ) : (
+                <>
+                  <Mail className="mr-2 h-5 w-5" />
+                  Gửi hồ sơ ứng tuyển
+                </>
+              )}
             </Button>
           </div>
         </form>
