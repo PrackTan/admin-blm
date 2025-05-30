@@ -623,6 +623,14 @@ export default function RecruitmentForm() {
                     }" class="link">${formData.email}</a></div>
                 </div>
             </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Facebook:</div>
+                    <div class="info-value"><a href="${
+                      formData.facebook
+                    }" class="link">${formData.facebook}</a></div>
+                </div>
+            </div>
         </div>
 
         <div class="info-group">
@@ -837,41 +845,62 @@ export default function RecruitmentForm() {
         <h2 class="section-title">CA LÀM VIỆC</h2>
         <div class="section-divider"></div>
 
-        <div class="info-row">
-            <div class="info-label">Một ngày Full, một ngày 6,5 tiếng:</div>
-            <div class="info-value">${formData.full1ngay}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Xoay ca 8 tiếng:</div>
-            <div class="info-value">${formData.xoayca}</div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-label">Vị trí ứng tuyển ưu tiên 1:</div>
-            <div class="info-value">${formData.vitriungtuyen1}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Vị trí ứng tuyển ưu tiên 2:</div>
-            <div class="info-value">${formData.vitriungtuyen2}</div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 1:</div>
-            <div class="info-value">${formData.diadiemmongmuonlamviec1}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 2:</div>
-            <div class="info-value">${formData.diadiemmongmuonlamviec2}</div>
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Một ngày Full, một ngày 6,5 tiếng:</div>
+                    <div class="info-value">${formData.full1ngay}</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Xoay ca 8 tiếng:</div>
+                    <div class="info-value">${formData.xoayca}</div>
+                </div>
+            </div>
         </div>
 
         <div class="info-group">
-            <div class="info-item" style="width: 50%;">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Vị trí ứng tuyển ưu tiên 1:</div>
+                    <div class="info-value">${formData.vitriungtuyen1}</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Vị trí ứng tuyển ưu tiên 2:</div>
+                    <div class="info-value">${formData.vitriungtuyen2}</div>
+                </div>
+            </div>
+        </div>
+         <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                  <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 1:</div>
+                  <div class="info-value">${
+                    formData.diadiemmongmuonlamviec1
+                  }</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                   <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 2:</div>
+                    <div class="info-value">${
+                      formData.diadiemmongmuonlamviec2
+                    }</div>
+                </div>
+            </div>
+        </div>            
+        
+        <div class="info-group">
+            <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Thời gian bận việc cá nhân:</div>
                     <div class="info-value">${formData.thoigianban}</div>
                 </div>
             </div>
-            <div class="info-item" style="width: 50%;">
+            <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Chữ ký ứng viên</div>
                 </div>
@@ -885,18 +914,12 @@ export default function RecruitmentForm() {
                     <div class="info-value">${formData.kenhtuyendung}</div>
                 </div>
             </div>
-        </div>
-
-        <div class="info-group">
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Tham gia bảo hiểm:</div>
                     <div class="info-value">${formData.baohiem}</div>
                 </div>
             </div>
-        </div>
-
-        <div class="info-group">
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Ngày thử việc:</div>
