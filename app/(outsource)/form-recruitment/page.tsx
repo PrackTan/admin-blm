@@ -234,7 +234,8 @@ export default function RecruitmentForm() {
         }
 
         .section {
-            margin-bottom: 15px;
+            margin: 32px auto 32px auto; /* cách trên dưới, tự động căn giữa ngang */
+            border: 1.5px solid #eee;
         }
 
         .section-title {
