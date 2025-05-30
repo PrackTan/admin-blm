@@ -631,40 +631,33 @@ export default function RecruitmentForm() {
                 <div class="info-row">
                     <div class="info-label">Facebook:</div>
                     <div class="info-value"><a href="${
-                      formData.facebook ||
-                      "https://www.facebook.com/share/1E6tLikzE4/"
-                    }" class="link">${
-        formData.facebook || "https://www.facebook.com/share/1E6tLikzE4/"
-      }</a></div>
+                      formData.facebook
+                    }" class="link">${formData.facebook}</a></div>
                 </div>
             </div>
         </div>
 
         <div class="info-row">
             <div class="info-label">Giới thiệu bản thân:</div>
-            <div class="info-value">${
-              formData.gioithieubanthan || "ASDASD"
-            }</div>
+            <div class="info-value">${formData.gioithieubanthan}</div>
         </div>
 
         <div class="info-row">
             <div class="info-label">Mục tiêu nghề nghiệp:</div>
-            <div class="info-value">${
-              formData.muctieunghenghiep || "DASD"
-            }</div>
+            <div class="info-value">${formData.muctieunghenghiep}</div>
         </div>
 
         <div class="info-group">
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Chiều cao:</div>
-                    <div class="info-value">${formData.chieucao || "1m65"}</div>
+                    <div class="info-value">${formData.chieucao}</div>
                 </div>
             </div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Cân nặng:</div>
-                    <div class="info-value">${formData.cannang || "51kg"}</div>
+                    <div class="info-value">${formData.cannang}</div>
                 </div>
             </div>
         </div>
@@ -678,24 +671,20 @@ export default function RecruitmentForm() {
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Lương cơ bản:</div>
-                    <div class="info-value">${
-                      formData.luongcoban || "8 Triệu"
-                    }</div>
+                    <div class="info-value">${formData.luongcoban}</div>
                 </div>
             </div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">KPI:</div>
-                    <div class="info-value">${formData.kpi || "4 Triệu"}</div>
+                    <div class="info-value">${formData.kpi}</div>
                 </div>
             </div>
         </div>
 
         <div class="info-row">
             <div class="info-label">Tổng thu nhập mong muốn tháng đầu tiên (Bao gồm lương cơ bản và KPI ):</div>
-            <div class="info-value">${
-              formData.tongthunhapmongmuon || "12 Triệu"
-            }</div>
+            <div class="info-value">${formData.tongthunhapmongmuon}</div>
         </div>
     </div>
 
@@ -742,9 +731,7 @@ export default function RecruitmentForm() {
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Ngoại ngữ:</div>
-                    <div class="info-value">${
-                      formData.ngoaingu || "English"
-                    }</div>
+                    <div class="info-value">${formData.ngoaingu}</div>
                 </div>
             </div>
             <div class="info-item">
@@ -851,48 +838,36 @@ export default function RecruitmentForm() {
 
         <div class="info-row">
             <div class="info-label">Một ngày Full, một ngày 6,5 tiếng:</div>
-            <div class="info-value">${formData.full1ngay || "X"}</div>
+            <div class="info-value">${formData.full1ngay}</div>
         </div>
         <div class="info-row">
             <div class="info-label">Xoay ca 8 tiếng:</div>
-            <div class="info-value">${formData.xoayca || "X"}</div>
+            <div class="info-value">${formData.xoayca}</div>
         </div>
 
         <div class="info-row">
             <div class="info-label">Vị trí ứng tuyển ưu tiên 1:</div>
-            <div class="info-value">${
-              formData.vitriungtuyen1 || "[vitriungtuyenthem1]"
-            }</div>
+            <div class="info-value">${formData.vitriungtuyen1}</div>
         </div>
         <div class="info-row">
             <div class="info-label">Vị trí ứng tuyển ưu tiên 2:</div>
-            <div class="info-value">${
-              formData.vitriungtuyen2 || "Nhân viên tư vấn bán hàng"
-            }</div>
+            <div class="info-value">${formData.vitriungtuyen2}</div>
         </div>
 
         <div class="info-row">
             <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 1:</div>
-            <div class="info-value">${
-              formData.diadiemmongmuonlamviec1 ||
-              "81-83 Đường Trần Phú, Phường 04, Quận 05, Hồ Chí Minh"
-            }</div>
+            <div class="info-value">${formData.diadiemmongmuonlamviec1}</div>
         </div>
         <div class="info-row">
             <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 2:</div>
-            <div class="info-value">${
-              formData.diadiemmongmuonlamviec2 ||
-              "81-83 Đường Trần Phú, Phường 04, Quận 05, Hồ Chí Minh"
-            }</div>
+            <div class="info-value">${formData.diadiemmongmuonlamviec2}</div>
         </div>
 
         <div class="info-group">
             <div class="info-item" style="width: 50%;">
                 <div class="info-row">
                     <div class="info-label">Thời gian bận việc cá nhân:</div>
-                    <div class="info-value">${
-                      formData.thoigianban || "Hiện tại có thể đi làm ngay"
-                    }</div>
+                    <div class="info-value">${formData.thoigianban}</div>
                 </div>
             </div>
             <div class="info-item" style="width: 50%;">
@@ -906,9 +881,7 @@ export default function RecruitmentForm() {
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Kênh tuyển dụng:</div>
-                    <div class="info-value">${
-                      formData.kenhtuyendung || "Quảng cáo qua Facebook"
-                    }</div>
+                    <div class="info-value">${formData.kenhtuyendung}</div>
                 </div>
             </div>
         </div>
@@ -917,7 +890,7 @@ export default function RecruitmentForm() {
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Tham gia bảo hiểm:</div>
-                    <div class="info-value">${formData.baohiem || "Có"}</div>
+                    <div class="info-value">${formData.baohiem}</div>
                 </div>
             </div>
         </div>
@@ -926,9 +899,7 @@ export default function RecruitmentForm() {
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Ngày thử việc:</div>
-                    <div class="info-value">${
-                      formData.ngaythuviec || "Thứ 2 ngày 1/3/2025"
-                    }</div>
+                    <div class="info-value">${formData.ngaythuviec}</div>
                 </div>
             </div>
         </div>
