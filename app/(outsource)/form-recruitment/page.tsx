@@ -268,6 +268,7 @@ export default function RecruitmentForm() {
         .info-group {
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-between;
         }
 
         .info-item {
@@ -541,9 +542,7 @@ export default function RecruitmentForm() {
     </style>
 </head>
 <body>
-    <h1 class="job-title">${
-      formData.vitriungtuyen1 || "Chuyên viên Quản Trị Website"
-    }</h1>
+    <h1 class="job-title">${formData.vitriungtuyen1}</h1>
 
     <div class="section">
         <h2 class="section-title">THÔNG TIN CÁ NHÂN</h2>
@@ -553,23 +552,19 @@ export default function RecruitmentForm() {
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Họ tên:</div>
-                    <div class="info-value">${
-                      formData.hovaten || "LÊ MINH KHANG"
-                    }</div>
+                    <div class="info-value">${formData.hovaten}</div>
                 </div>
             </div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Giới tính:</div>
-                    <div class="info-value">${formData.gioitinh || "Nam"}</div>
+                    <div class="info-value">${formData.gioitinh}</div>
                 </div>
             </div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Ngày sinh:</div>
-                    <div class="info-value">${
-                      formData.ngaysinh || "2025-05-30"
-                    }</div>
+                    <div class="info-value">${formData.ngaysinh}</div>
                 </div>
             </div>
         </div>
@@ -578,25 +573,20 @@ export default function RecruitmentForm() {
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Điện thoại:</div>
-                    <div class="info-value">${
-                      formData.dienthoai || "0394093912"
-                    }</div>
+                    <div class="info-value">${formData.dienthoai}</div>
                 </div>
             </div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">CMND/CCCD:</div>
-                    <div class="info-value">${
-                      formData.CMND || "3213213213213"
-                    }</div>
+                    <div class="info-value">
+                    ${formData.CMND}</div>
                 </div>
             </div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Ngày cấp:</div>
-                    <div class="info-value">${
-                      formData.ngaycap || "2025-05-30"
-                    }</div>
+                    <div class="info-value">${formData.ngaycap}</div>
                 </div>
             </div>
         </div>
@@ -605,18 +595,14 @@ export default function RecruitmentForm() {
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Hôn nhân:</div>
-                    <div class="info-value">${
-                      formData.honnhan || "Độc thân"
-                    }</div>
+                    <div class="info-value">${formData.honnhan}</div>
                 </div>
             </div>
             <div class="info-item"></div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Nơi cấp:</div>
-                    <div class="info-value">${
-                      formData.noicap || "Tiền Giang"
-                    }</div>
+                    <div class="info-value">${formData.noicap}</div>
                 </div>
             </div>
         </div>
@@ -625,20 +611,15 @@ export default function RecruitmentForm() {
             <div class="info-item" style="width: 50%;">
                 <div class="info-row">
                     <div class="info-label">Nơi ở hiện tại:</div>
-                    <div class="info-value">${
-                      formData.thuongtru ||
-                      "217 Trần huy liệu, phú nhuận, hồ chí minh"
-                    }</div>
+                    <div class="info-value">${formData.thuongtru}</div>
                 </div>
             </div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Email:</div>
                     <div class="info-value"><a href="mailto:${
-                      formData.email || "leminhkhang.ltp@gmail.com"
-                    }" class="link">${
-        formData.email || "leminhkhang.ltp@gmail.com"
-      }</a></div>
+                      formData.email
+                    }" class="link">${formData.email}</a></div>
                 </div>
             </div>
         </div>
