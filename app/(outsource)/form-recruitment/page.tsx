@@ -1763,13 +1763,9 @@ export default function RecruitmentForm() {
                   <SelectTrigger>
                     <SelectValue placeholder="Quản lý/phó quản lý cửa hàng" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="h-4 overflow-y-auto">
                     {positionOptions.map((position) => (
-                      <SelectItem
-                        key={position}
-                        value={position}
-                        className="h-7 overflow-y-auto"
-                      >
+                      <SelectItem key={position} value={position}>
                         {position}
                       </SelectItem>
                     ))}
@@ -1787,13 +1783,9 @@ export default function RecruitmentForm() {
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn vị trí thứ 2 (tùy chọn)" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="h-4 overflow-y-auto">
                     {positionOptions.map((position) => (
-                      <SelectItem
-                        key={position}
-                        value={position}
-                        className="h-7 overflow-y-auto"
-                      >
+                      <SelectItem key={position} value={position}>
                         {position}
                       </SelectItem>
                     ))}
