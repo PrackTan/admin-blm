@@ -609,7 +609,7 @@ export default function RecruitmentForm() {
         </div>
 
         <div class="info-group">
-            <div class="info-item" style="width: 50%;">
+            <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Nơi ở hiện tại:</div>
                     <div class="info-value">${formData.thuongtru}</div>
@@ -623,19 +623,6 @@ export default function RecruitmentForm() {
                     }" class="link">${formData.email}</a></div>
                 </div>
             </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Facebook:</div>
-                    <div class="info-value"><a href="${
-                      formData.facebook
-                    }" class="link">${formData.facebook}</a></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-group">
-            <div class="info-item"></div>
-            <div class="info-item"></div>
             <div class="info-item">
                 <div class="info-row">
                     <div class="info-label">Facebook:</div>
