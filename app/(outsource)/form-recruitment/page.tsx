@@ -73,7 +73,8 @@ export default function RecruitmentForm() {
     thoigianban: "",
     full1ngay: "",
     xoayca: "",
-    vitriungtuyenthem2: "",
+    vitriungtuyen1: "",
+    vitriungtuyen2: "",
     diadiemmongmuonlamviec1: "",
     diadiemmongmuonlamviec2: "",
     kenhtuyendung: "",
@@ -105,7 +106,6 @@ export default function RecruitmentForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Kiểm tra định dạng file
       const allowedTypes = [
         "application/pdf",
         "application/msword",
@@ -116,7 +116,6 @@ export default function RecruitmentForm() {
         return;
       }
 
-      // Kiểm tra kích thước file (tối đa 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("File không được vượt quá 5MB!");
         return;
@@ -129,7 +128,6 @@ export default function RecruitmentForm() {
 
   const removeFile = () => {
     setCvFile(null);
-    // Reset input file
     const fileInput = document.getElementById("cvFile") as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
@@ -148,7 +146,6 @@ export default function RecruitmentForm() {
 
   const toggleSecondCompany = () => {
     setShowSecondCompany(!showSecondCompany);
-    // Nếu ẩn công ty thứ 2, xóa dữ liệu của nó
     if (showSecondCompany) {
       setFormData((prev) => ({
         ...prev,
@@ -160,521 +157,854 @@ export default function RecruitmentForm() {
       }));
     }
   };
+  const positionOptions = [
+    "Quản lý/phó quản lý cửa hàng",
+    "Nhân viên kế toán bán hàng",
+    "Nhân viên thu ngân",
+    "Nhân viên Kế Toán Kho – Linh Kiện Sửa Chữa",
+    "Nhân viên tư vấn bán hàng",
+    "Nhân viên tiếp nhận bảo hành",
+    "Nhân viên kỹ thuật phần mềm",
+    "Nhân viên kỹ thuật thay thế linh kiện",
+    "Nhân viên kỹ thuật sửa chữa mainboard",
+    "Chuyên viên kế toán nội bộ",
+    "Chuyên viên kế toán thuế",
+    "Chuyên viên kế toán kiểm toán",
+    "Chuyên viên kế toán tài chính",
+    "Chuyên viên kế toán thanh toán",
+    "Chuyên viên kế toán công nợ",
+    "Trưởng phòng media",
+    "Chuyên viên digital marketing",
+    "Chuyên viên sáng tạo nội dung - reviewer",
+    "Chuyên viên brand marketing",
+    "Chuyên viên social marketing",
+    "Chuyên viên content SEO",
+    "Chuyên viên video editor",
+    "Chuyên viên graphic designer",
+    "Chuyên viên vận hành sàn TMĐT (Shopee-Tiktok)",
+    "Trưởng phòng IT",
+    "Chuyên viên quản trị Website",
+    "Chuyên viên lập trình Website",
+    "Chuyên viên ngành hàng Điện thoại/MTB/Laptop",
+    "Chuyên viên ngành hàng phụ kiện - dịch vụ tiện ích",
+    "Chuyên viên hành chính Chuyên sự",
+    "Chuyên viên hành chính văn phòng",
+    "Chuyên viên giám sát",
+    "Chuyên viên đào tạo",
+    "Chuyên viên call center",
+    "Nhân viên Tiếp Đón Khách Hàng (Bảo Vệ)",
+    "Nhân viên kho vận",
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // Tạo nội dung email HTML đẹp
-      const emailContent = `
-                <!DOCTYPE html>
+      const emailContent = `<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Ứng Tuyển - Email Version</title>
+    <title>Hồ sơ ứng tuyển "${formData.hovaten || "Ứng viên"} - ${
+        formData.dienthoai || ""
+      }" - tuyendungbachlong@gmail.com - Gmail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #000;
+            line-height: 1.5;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .job-title {
+            color: #0088cc;
+            font-size: 24px;
+            font-weight: normal;
+            margin: 0 0 10px 0;
+        }
+
+        .section {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        .section-divider {
+            border-bottom: 1px solid #ffd700;
+            margin: 5px 0 15px 0;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            width: 120px;
+            min-width: 120px;
+            margin-right: 10px;
+        }
+
+        .info-value {
+            flex: 1;
+        }
+
+        .info-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            width: 33%;
+            min-width: 250px;
+            margin-bottom: 5px;
+        }
+
+        .company-section {
+            margin-bottom: 15px;
+        }
+
+        .company-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .checkbox {
+            margin-right: 5px;
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .signature-box {
+            text-align: center;
+            width: 200px;
+        }
+
+        .employer-section {
+            margin-top: 20px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+        }
+
+        .checkbox-square {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #000;
+            margin-right: 5px;
+            display: inline-block;
+        }
+
+        .dotted-line {
+            border-bottom: 1px dotted #000;
+            flex: 1;
+        }
+
+        .employer-note {
+            text-align: right;
+            font-style: italic;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .link {
+            color: #0088cc;
+            text-decoration: none;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .email-notice {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .email-notice p {
+            color: #15803d;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: 1fr;
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            .grid-cols-2,
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.col-span-2 {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .form-group.col-span-2 {
+                grid-column: span 1;
+            }
+        }
+
+        label {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        .required::after {
+            content: " *";
+            color: #ef4444;
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .separator {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+
+        .submit-container {
+            display: flex;
+            justify-content: center;
+            padding-top: 1.5rem;
+        }
+
+        .submit-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 3rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background: #2563eb;
+        }
+
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    </style>
 </head>
-<body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; background-color: #f5f5f5;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 800px; margin: 0 auto; background-color: #ffffff;">
-        <!-- Header -->
-        <tr>
-            <td style="padding: 30px; text-align: center; background-color: #4f46e5; color: white;">
-                <h1 style="margin: 0; font-size: 28px; font-weight: bold;">Form Ứng Tuyển</h1>
-                <p style="margin: 10px 0 0 0; font-size: 16px;">Thông tin ứng viên</p>
-                ${
-                  cvFile
-                    ? `<p style="margin: 10px 0 0 0; font-size: 14px; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 4px;">📎 File CV đính kèm: ${cvFile.name}</p>`
-                    : ""
-                }
-            </td>
-        </tr>
-        <!-- Thông tin cá nhân -->
-        <tr>
-            <td style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">👤 Thông tin cá nhân</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                    <td width="50%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Họ và tên:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.hovaten
-                                        }</span>
-                                    </td>
-                                    <td width="50%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Giới tính:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.gioitinh
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Ngày sinh:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.ngaysinh
-                                        }</span>
-                                    </td>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Số điện thoại:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.dienthoai
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">CMND/CCCD:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.CMND
-                                        }</span>
-                                    </td>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Ngày cấp:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.ngaycap
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Nơi cấp:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.noicap
-                                        }</span>
-                                    </td>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Tình trạng hôn nhân:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.honnhan
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Địa chỉ thường trú:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.thuongtru
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Email:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.email
-                                        }</span>
-                                    </td>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Facebook:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.facebook
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Chiều cao:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.chieucao
-                                        }</span>
-                                    </td>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Cân nặng:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.cannang
-                                        }</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+<body>
+    <h1 class="job-title">${
+      formData.vitriungtuyen1 || "Chuyên viên Quản Trị Website"
+    }</h1>
 
-        <!-- Giới thiệu bản thân -->
-        <tr>
-            <td style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">👥 Giới thiệu bản thân</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <div style="margin-bottom: 15px;">
-                                <strong style="color: #374151;">Tự giới thiệu bản thân:</strong><br>
-                                <span style="color: #6b7280; line-height: 1.6;">
-                                    ${formData.gioithieubanthan}
-                                </span>
-                            </div>
-                            <div>
-                                <strong style="color: #374151;">Mục tiêu nghề nghiệp:</strong><br>
-                                <span style="color: #6b7280; line-height: 1.6;">
-                                    ${formData.muctieunghenghiep}
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+    <div class="section">
+        <h2 class="section-title">THÔNG TIN CÁ NHÂN</h2>
+        <div class="section-divider"></div>
 
-        <!-- Mức lương mong muốn -->
-        <tr>
-            <td style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">💰 Mức lương mong muốn</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                    <td width="33%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Lương cơ bản:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.luongcoban
-                                        }</span>
-                                    </td>
-                                    <td width="33%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">KPI:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.kpi
-                                        }</span>
-                                    </td>
-                                    <td width="34%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Tổng thu nhập:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.tongthunhapmongmuon
-                                        }</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Họ tên:</div>
+                    <div class="info-value">${
+                      formData.hovaten || "LÊ MINH KHANG"
+                    }</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Giới tính:</div>
+                    <div class="info-value">${formData.gioitinh || "Nam"}</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Ngày sinh:</div>
+                    <div class="info-value">${
+                      formData.ngaysinh || "2025-05-30"
+                    }</div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Trình độ học vấn -->
-        <tr>
-            <td style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">🎓 Trình độ học vấn</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                    <td width="50%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Tên trường:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.tentruong
-                                        }</span>
-                                    </td>
-                                    <td width="50%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Trình độ:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.trinhdo
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Ngành học:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.nganhhoc
-                                        }</span>
-                                    </td>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Tình trạng:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.tinhtrang
-                                        }</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Điện thoại:</div>
+                    <div class="info-value">${
+                      formData.dienthoai || "0394093912"
+                    }</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">CMND/CCCD:</div>
+                    <div class="info-value">${
+                      formData.CMND || "3213213213213"
+                    }</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Ngày cấp:</div>
+                    <div class="info-value">${
+                      formData.ngaycap || "2025-05-30"
+                    }</div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Kỹ năng -->
-        <tr>
-            <td style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">⚡ Kỹ năng</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                    <td width="33%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Ngoại ngữ:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.ngoaingu
-                                        }</span>
-                                    </td>
-                                    <td width="33%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Tin học:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.tinhoc
-                                        }</span>
-                                    </td>
-                                    <td width="34%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Kỹ năng khác:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.kynangkhac
-                                        }</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Hôn nhân:</div>
+                    <div class="info-value">${
+                      formData.honnhan || "Độc thân"
+                    }</div>
+                </div>
+            </div>
+            <div class="info-item"></div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Nơi cấp:</div>
+                    <div class="info-value">${
+                      formData.noicap || "Tiền Giang"
+                    }</div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Kinh nghiệm làm việc -->
-        <tr>
-            <td style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">💼 Kinh nghiệm làm việc</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <!-- Công ty 1 -->
-                            <div style="margin-bottom: 25px; padding: 15px; background-color: #f9fafb; border-radius: 8px;">
-                                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">Công ty gần nhất</h3>
-                                <table width="100%" cellpadding="5" cellspacing="0">
-                                    <tr>
-                                        <td width="50%" style="vertical-align: top;">
-                                            <strong style="color: #374151;">Thời gian:</strong><br>
-                                            <span style="color: #6b7280;">${
-                                              formData.thoigiancty
-                                            }</span>
-                                        </td>
-                                        <td width="50%" style="vertical-align: top;">
-                                            <strong style="color: #374151;">Tên công ty:</strong><br>
-                                            <span style="color: #6b7280;">${
-                                              formData.tencty
-                                            }</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top; padding-top: 10px;">
-                                            <strong style="color: #374151;">Vị trí:</strong><br>
-                                            <span style="color: #6b7280;">${
-                                              formData.cviecdalam
-                                            }</span>
-                                        </td>
-                                        <td style="vertical-align: top; padding-top: 10px;">
-                                            <strong style="color: #374151;">Thu nhập:</strong><br>
-                                            <span style="color: #6b7280;">${
-                                              formData.thunhapcty
-                                            }</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" style="vertical-align: top; padding-top: 10px;">
-                                            <strong style="color: #374151;">Lý do nghỉ việc:</strong><br>
-                                            <span style="color: #6b7280;">${
-                                              formData.lydonghi
-                                            }</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+        <div class="info-group">
+            <div class="info-item" style="width: 50%;">
+                <div class="info-row">
+                    <div class="info-label">Nơi ở hiện tại:</div>
+                    <div class="info-value">${
+                      formData.thuongtru ||
+                      "217 Trần huy liệu, phú nhuận, hồ chí minh"
+                    }</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Email:</div>
+                    <div class="info-value"><a href="mailto:${
+                      formData.email || "leminhkhang.ltp@gmail.com"
+                    }" class="link">${
+        formData.email || "leminhkhang.ltp@gmail.com"
+      }</a></div>
+                </div>
+            </div>
+        </div>
 
-                            ${
-                              showSecondCompany && formData.tencty1
-                                ? `
-                            <!-- Công ty 2 -->
-                            <div style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
-                                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">Công ty trước đó</h3>
-                                <table width="100%" cellpadding="5" cellspacing="0">
-                                    <tr>
-                                        <td width="50%" style="vertical-align: top;">
-                                            <strong style="color: #374151;">Thời gian:</strong><br>
-                                            <span style="color: #6b7280;">${formData.thoigiancty1}</span>
-                                        </td>
-                                        <td width="50%" style="vertical-align: top;">
-                                            <strong style="color: #374151;">Tên công ty:</strong><br>
-                                            <span style="color: #6b7280;">${formData.tencty1}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top; padding-top: 10px;">
-                                            <strong style="color: #374151;">Vị trí:</strong><br>
-                                            <span style="color: #6b7280;">${formData.cviecdalam1}</span>
-                                        </td>
-                                        <td style="vertical-align: top; padding-top: 10px;">
-                                            <strong style="color: #374151;">Thu nhập:</strong><br>
-                                            <span style="color: #6b7280;">${formData.thunhapcty1}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" style="vertical-align: top; padding-top: 10px;">
-                                            <strong style="color: #374151;">Lý do nghỉ việc:</strong><br>
-                                            <span style="color: #6b7280;">${formData.lydonghi1}</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            `
-                                : ""
-                            }
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+        <div class="info-group">
+            <div class="info-item"></div>
+            <div class="info-item"></div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Facebook:</div>
+                    <div class="info-value"><a href="${
+                      formData.facebook ||
+                      "https://www.facebook.com/share/1E6tLikzE4/"
+                    }" class="link">${
+        formData.facebook || "https://www.facebook.com/share/1E6tLikzE4/"
+      }</a></div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Thông tin công việc mong muốn -->
-        <tr>
-            <td style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">📍 Thông tin công việc mong muốn</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                    <td width="50%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Thời gian bận:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.thoigianban
-                                        }</span>
-                                    </td>
-                                    <td width="50%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Có thể làm full 1 ngày:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.full1ngay
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Có thể xoay ca:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.xoayca
-                                        }</span>
-                                    </td>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Vị trí ứng tuyển thêm:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.vitriungtuyenthem2
-                                        }</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Địa điểm mong muốn 1:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.diadiemmongmuonlamviec1
-                                        }</span>
-                                    </td>
-                                    <td style="vertical-align: top; padding-top: 15px;">
-                                        <strong style="color: #374151;">Địa điểm mong muốn 2:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.diadiemmongmuonlamviec2
-                                        }</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+        <div class="info-row">
+            <div class="info-label">Giới thiệu bản thân:</div>
+            <div class="info-value">${
+              formData.gioithieubanthan || "ASDASD"
+            }</div>
+        </div>
 
-        <!-- Thông tin khác -->
-        <tr>
-            <td style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td style="padding: 20px; background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                            <h2 style="margin: 0; color: #1e293b; font-size: 20px;">⏰ Thông tin khác</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                    <td width="33%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Kênh tuyển dụng:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.kenhtuyendung
-                                        }</span>
-                                    </td>
-                                    <td width="33%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Có bảo hiểm:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.baohiem
-                                        }</span>
-                                    </td>
-                                    <td width="34%" style="vertical-align: top;">
-                                        <strong style="color: #374151;">Ngày có thể thử việc:</strong><br>
-                                        <span style="color: #6b7280;">${
-                                          formData.ngaythuviec
-                                        }</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+        <div class="info-row">
+            <div class="info-label">Mục tiêu nghề nghiệp:</div>
+            <div class="info-value">${
+              formData.muctieunghenghiep || "DASD"
+            }</div>
+        </div>
 
-        <!-- Footer -->
-        <tr>
-            <td style="padding: 30px; text-align: center; background-color: #f8fafc; border-top: 2px solid #e2e8f0;">
-                <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                    📧 Hồ sơ ứng tuyển được gửi tự động<br>
-                    📞 Liên hệ: ${formData.dienthoai} | ✉️ ${formData.email}
-                    ${cvFile ? `<br>📎 File CV đính kèm: ${cvFile.name}` : ""}
-                </p>
-            </td>
-        </tr>
-    </table>
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Chiều cao:</div>
+                    <div class="info-value">${formData.chieucao || "1m65"}</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Cân nặng:</div>
+                    <div class="info-value">${formData.cannang || "51kg"}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">THU NHẬP MONG MUỐN</h2>
+        <div class="section-divider"></div>
+
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Lương cơ bản:</div>
+                    <div class="info-value">${
+                      formData.luongcoban || "8 Triệu"
+                    }</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">KPI:</div>
+                    <div class="info-value">${formData.kpi || "4 Triệu"}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-label">Tổng thu nhập mong muốn tháng đầu tiên (Bao gồm lương cơ bản và KPI ):</div>
+            <div class="info-value">${
+              formData.tongthunhapmongmuon || "12 Triệu"
+            }</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">TRÌNH ĐỘ HỌC VẤN</h2>
+        <div class="section-divider"></div>
+
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Tên trường:</div>
+                    <div class="info-value">${formData.tentruong}</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Ngành học:</div>
+                    <div class="info-value">${formData.nganhhoc}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Trình độ:</div>
+                    <div class="info-value">${formData.trinhdo}</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Tình trạng:</div>
+                    <div class="info-value">${formData.tinhtrang}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">CHỨNG CHỈ</h2>
+        <div class="section-divider"></div>
+
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Ngoại ngữ:</div>
+                    <div class="info-value">${
+                      formData.ngoaingu || "English"
+                    }</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Tin học:</div>
+                    <div class="info-value">${formData.tinhoc || ""}</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Kỹ năng khác (nếu có):</div>
+                    <div class="info-value">${formData.kynangkhac || ""}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">QUÁ TRÌNH LÀM VIỆC TRƯỚC ĐÂY</h2>
+        <div class="section-divider"></div>
+
+        <div class="company-section">
+            <div class="company-title">Công ty 1</div>
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-row">
+                        <div class="info-label">Thời gian:</div>
+                        <div class="info-value">${formData.thoigiancty}</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-row">
+                        <div class="info-label">Tên công ty:</div>
+                        <div class="info-value">${formData.tencty}</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-row">
+                        <div class="info-label">Công việc đã làm:</div>
+                        <div class="info-value">${formData.cviecdalam}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-row">
+                        <div class="info-label">Thu nhập:</div>
+                        <div class="info-value">${formData.thunhapcty}</div>
+                    </div>
+                </div>
+                <div class="info-item" style="width: 66%;">
+                    <div class="info-row">
+                        <div class="info-label">Lý do nghỉ việc:</div>
+                        <div class="info-value">${formData.lydonghi}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="company-section">
+            <div class="company-title">Công ty 2</div>
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-row">
+                        <div class="info-label">Thời gian:</div>
+                        <div class="info-value">${formData.thoigiancty1}</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-row">
+                        <div class="info-label">Tên công ty:</div>
+                        <div class="info-value">${formData.tencty1}</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-row">
+                        <div class="info-label">Công việc đã làm:</div>
+                        <div class="info-value">${formData.cviecdalam1}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-row">
+                        <div class="info-label">Thu nhập:</div>
+                        <div class="info-value">${formData.thunhapcty1}</div>
+                    </div>
+                </div>
+                <div class="info-item" style="width: 66%;">
+                    <div class="info-row">
+                        <div class="info-label">Lý do nghỉ việc:</div>
+                        <div class="info-value">${formData.lydonghi1}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">CA LÀM VIỆC</h2>
+        <div class="section-divider"></div>
+
+        <div class="info-row">
+            <div class="info-label">Một ngày Full, một ngày 6,5 tiếng:</div>
+            <div class="info-value">${formData.full1ngay || "X"}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Xoay ca 8 tiếng:</div>
+            <div class="info-value">${formData.xoayca || "X"}</div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-label">Vị trí ứng tuyển ưu tiên 1:</div>
+            <div class="info-value">${
+              formData.vitriungtuyen1 || "[vitriungtuyenthem1]"
+            }</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Vị trí ứng tuyển ưu tiên 2:</div>
+            <div class="info-value">${
+              formData.vitriungtuyen2 || "Nhân viên tư vấn bán hàng"
+            }</div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 1:</div>
+            <div class="info-value">${
+              formData.diadiemmongmuonlamviec1 ||
+              "81-83 Đường Trần Phú, Phường 04, Quận 05, Hồ Chí Minh"
+            }</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 2:</div>
+            <div class="info-value">${
+              formData.diadiemmongmuonlamviec2 ||
+              "81-83 Đường Trần Phú, Phường 04, Quận 05, Hồ Chí Minh"
+            }</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-item" style="width: 50%;">
+                <div class="info-row">
+                    <div class="info-label">Thời gian bận việc cá nhân:</div>
+                    <div class="info-value">${
+                      formData.thoigianban || "Hiện tại có thể đi làm ngay"
+                    }</div>
+                </div>
+            </div>
+            <div class="info-item" style="width: 50%;">
+                <div class="info-row">
+                    <div class="info-label">Chữ ký ứng viên</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Kênh tuyển dụng:</div>
+                    <div class="info-value">${
+                      formData.kenhtuyendung || "Quảng cáo qua Facebook"
+                    }</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Tham gia bảo hiểm:</div>
+                    <div class="info-value">${formData.baohiem || "Có"}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-item">
+                <div class="info-row">
+                    <div class="info-label">Ngày thử việc:</div>
+                    <div class="info-value">${
+                      formData.ngaythuviec || "Thứ 2 ngày 1/3/2025"
+                    }</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">NHẬN XÉT NHÀ TUYỂN DỤNG</h2>
+        <div class="section-divider"></div>
+
+        <div style="display: flex; margin-bottom: 15px;">
+            <div class="checkbox-container">
+                <div class="checkbox-square"></div>
+                <div>Phù hợp:</div>
+            </div>
+            <div class="checkbox-container">
+                <div class="checkbox-square"></div>
+                <div>Chưa phù hợp:</div>
+            </div>
+            <div style="flex: 1;"></div>
+            <div style="display: flex; align-items: center;">
+                <div style="margin-right: 10px;">Điểm:</div>
+                <div style="width: 50px;"></div>
+                <div style="margin: 0 10px;">Ngày: ...../...../......</div>
+            </div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-label">Vị trí chốt thử việc:</div>
+            <div class="info-value dotted-line"></div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-label">Chi nhánh thử việc:</div>
+            <div class="info-value dotted-line"></div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-label">Nhận xét khác:</div>
+            <div class="info-value dotted-line"></div>
+        </div>
+
+        <div class="employer-note">(Dành cho nhà tuyển dụng)</div>
+    </div>
+
+    <div style="margin-top: 20px; font-size: 12px;">
+        https://mail.google.com/mail/u/3/?pli=1#inbox/FMfcgzQbfTwqcjKNsDmJsbdVKzbskmZB
+    </div>
+    <div style="text-align: right; font-size: 12px;">1/1</div>
 </body>
-</html> `;
+</html>`;
 
-      // Tạo FormData để gửi cả text và file
       const submitData = new FormData();
 
-      // Thêm tất cả dữ liệu form
       Object.entries(formData).forEach(([key, value]) => {
         submitData.append(key, value);
       });
 
-      // Thêm email content
       submitData.append("emailContent", emailContent);
       submitData.append("to", "tuyendungbachlong@gmail.com");
       submitData.append(
@@ -684,15 +1014,13 @@ export default function RecruitmentForm() {
         }`
       );
 
-      // Thêm file CV nếu có
       if (cvFile) {
         submitData.append("cvFile", cvFile);
       }
 
-      // Gửi email qua API route
       const res = await fetch("/form-recruitment/api/send-email", {
         method: "POST",
-        body: submitData, // Không set Content-Type header khi gửi FormData
+        body: submitData,
       });
 
       const result = await res.json();
@@ -705,7 +1033,6 @@ export default function RecruitmentForm() {
           duration: 6000,
         });
 
-        // Reset form sau khi gửi thành công
         setFormData({
           hovaten: "",
           gioitinh: "",
@@ -745,7 +1072,8 @@ export default function RecruitmentForm() {
           thoigianban: "",
           full1ngay: "",
           xoayca: "",
-          vitriungtuyenthem2: "",
+          vitriungtuyen1: "",
+          vitriungtuyen2: "",
           diadiemmongmuonlamviec1: "",
           diadiemmongmuonlamviec2: "",
           kenhtuyendung: "",
@@ -787,7 +1115,6 @@ export default function RecruitmentForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Thông tin cá nhân */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -971,7 +1298,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Upload CV */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1009,7 +1335,6 @@ export default function RecruitmentForm() {
                   </div>
                 </div>
 
-                {/* Hiển thị file đã chọn */}
                 {cvFile && (
                   <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
                     <div className="flex items-center gap-3">
@@ -1047,7 +1372,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Giới thiệu bản thân */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1085,7 +1409,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Mức lương mong muốn */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1134,7 +1457,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Trình độ học vấn */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1212,7 +1534,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Kỹ năng */}
           <Card>
             <CardHeader>
               <CardTitle>Kỹ năng</CardTitle>
@@ -1253,7 +1574,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Kinh nghiệm làm việc */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1262,7 +1582,6 @@ export default function RecruitmentForm() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-8">
-              {/* Công ty 1 */}
               <div>
                 <h4 className="font-semibold mb-4">Công ty gần nhất</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1329,7 +1648,6 @@ export default function RecruitmentForm() {
                 </div>
               </div>
 
-              {/* Nút thêm/ẩn công ty thứ 2 */}
               <div className="flex justify-center">
                 <Button
                   type="button"
@@ -1351,7 +1669,6 @@ export default function RecruitmentForm() {
                 </Button>
               </div>
 
-              {/* Công ty 2 - Chỉ hiển thị khi showSecondCompany = true */}
               {showSecondCompany && (
                 <>
                   <Separator />
@@ -1420,7 +1737,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Thông tin công việc mong muốn */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1477,127 +1793,47 @@ export default function RecruitmentForm() {
                 </Select>
               </div>
 
-              <div className="space-y-2 h-min">
-                <Label htmlFor="vitriungtuyenthem2">Vị trí ứng tuyển</Label>
+              <div className="space-y-2">
+                <Label htmlFor="vitriungtuyenthem1">Vị trí ứng tuyển 1 *</Label>
                 <Select
-                  value={formData.vitriungtuyenthem2}
+                  value={formData.vitriungtuyen1}
                   onValueChange={(value) =>
-                    handleSelectChange("vitriungtuyenthem2", value)
+                    handleSelectChange("vitriungtuyen1", value)
                   }
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Quản lý/phó quản lý cửa hàng" />
                   </SelectTrigger>
-                  <SelectContent className="max-h-60 overflow-y-auto">
-                    <SelectItem value="Quản lý/phó quản lý cửa hàng">
-                      Quản lý/phó quản lý cửa hàng
-                    </SelectItem>
-                    <SelectItem value="Nhân viên kế toán bán hàng">
-                      Nhân viên kế toán bán hàng
-                    </SelectItem>
-                    <SelectItem value="Nhân viên thu ngân">
-                      Nhân viên thu ngân
-                    </SelectItem>
-                    <SelectItem value="Nhân viên Kế Toán Kho – Linh Kiện Sửa Chữa">
-                      Nhân viên Kế Toán Kho – Linh Kiện Sửa Chữa
-                    </SelectItem>
-                    <SelectItem value="Nhân viên tư vấn bán hàng">
-                      Nhân viên tư vấn bán hàng
-                    </SelectItem>
-                    <SelectItem value="Nhân viên tiếp nhận bảo hành">
-                      Nhân viên tiếp nhận bảo hành
-                    </SelectItem>
-                    <SelectItem value="Nhân viên kỹ thuật phần mềm">
-                      Nhân viên kỹ thuật phần mềm
-                    </SelectItem>
-                    <SelectItem value="Nhân viên kỹ thuật thay thế linh kiện">
-                      Nhân viên kỹ thuật thay thế linh kiện
-                    </SelectItem>
-                    <SelectItem value="Nhân viên kỹ thuật sửa chữa mainboard">
-                      Nhân viên kỹ thuật sửa chữa mainboard
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên kế toán nội bộ">
-                      Chuyên viên kế toán nội bộ
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên kế toán thuế">
-                      Chuyên viên kế toán thuế
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên kế toán kiểm toán">
-                      Chuyên viên kế toán kiểm toán
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên kế toán tài chính">
-                      Chuyên viên kế toán tài chính
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên kế toán thanh toán">
-                      Chuyên viên kế toán thanh toán
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên kế toán công nợ">
-                      Chuyên viên kế toán công nợ
-                    </SelectItem>
-                    <SelectItem value="Trưởng phòng media">
-                      Trưởng phòng media
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên digital marketing">
-                      Chuyên viên digital marketing
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên sáng tạo nội dung - reviewer">
-                      Chuyên viên sáng tạo nội dung - reviewer
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên brand marketing">
-                      Chuyên viên brand marketing
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên social marketing">
-                      Chuyên viên social marketing
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên content SEO">
-                      Chuyên viên content SEO
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên video editor">
-                      Chuyên viên video editor
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên graphic designer">
-                      Chuyên viên graphic designer
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên vận hành sàn TMĐT (Shopee-Tiktok)">
-                      Chuyên viên vận hành sàn TMĐT (Shopee-Tiktok)
-                    </SelectItem>
-                    <SelectItem value="Trưởng phòng IT">
-                      Trưởng phòng IT
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên quản trị Website">
-                      Chuyên viên quản trị Website
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên lập trình Website">
-                      Chuyên viên lập trình Website
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên ngành hàng Điện thoại/MTB/Laptop">
-                      Chuyên viên ngành hàng Điện thoại/MTB/Laptop
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên ngành hàng phụ kiện - dịch vụ tiện ích">
-                      Chuyên viên ngành hàng phụ kiện - dịch vụ tiện ích
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên hành chính Chuyên sự">
-                      Chuyên viên hành chính Chuyên sự
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên hành chính văn phòng">
-                      Chuyên viên hành chính văn phòng
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên giám sát">
-                      Chuyên viên giám sát
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên đào tạo">
-                      Chuyên viên đào tạo
-                    </SelectItem>
-                    <SelectItem value="Chuyên viên call center">
-                      Chuyên viên call center
-                    </SelectItem>
-                    <SelectItem value="Nhân viên Tiếp Đón Khách Hàng (Bảo Vệ)">
-                      Nhân viên Tiếp Đón Khách Hàng (Bảo Vệ)
-                    </SelectItem>
+                  <SelectContent>
+                    {positionOptions.map((position) => (
+                      <SelectItem key={position} value={position}>
+                        {position}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
-
+              <div className="space-y-2">
+                <Label htmlFor="vitriungtuyen2">Vị trí ứng tuyển 2</Label>
+                <Select
+                  value={formData.vitriungtuyen2}
+                  onValueChange={(value) =>
+                    handleSelectChange("vitriungtuyen2", value)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chọn vị trí thứ 2 (tùy chọn)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {positionOptions.map((position) => (
+                      <SelectItem key={position} value={position}>
+                        {position}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="diadiemmongmuonlamviec1">
                   Địa điểm mong muốn 1 *
@@ -1628,7 +1864,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Thông tin khác */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -1692,7 +1927,6 @@ export default function RecruitmentForm() {
             </CardContent>
           </Card>
 
-          {/* Submit button */}
           <div className="flex justify-center pt-6">
             <Button
               type="submit"
