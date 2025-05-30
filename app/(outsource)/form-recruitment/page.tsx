@@ -1768,7 +1768,7 @@ export default function RecruitmentForm() {
                       <SelectItem
                         key={position}
                         value={position}
-                        className="h-3"
+                        className="max-h-56 overflow-auto"
                       >
                         {position}
                       </SelectItem>
@@ -1792,7 +1792,7 @@ export default function RecruitmentForm() {
                       <SelectItem
                         key={position}
                         value={position}
-                        className="h-3"
+                        className="max-h-56 overflow-auto"
                       >
                         {position}
                       </SelectItem>
