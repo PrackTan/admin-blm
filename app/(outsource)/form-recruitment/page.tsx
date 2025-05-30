@@ -972,11 +972,6 @@ export default function RecruitmentForm() {
 
         <div class="employer-note">(Dành cho nhà tuyển dụng)</div>
     </div>
-
-    <div style="margin-top: 20px; font-size: 12px;">
-        https://mail.google.com/mail/u/3/?pli=1#inbox/FMfcgzQbfTwqcjKNsDmJsbdVKzbskmZB
-    </div>
-    <div style="text-align: right; font-size: 12px;">1/1</div>
 </body>
 </html>`;
 
