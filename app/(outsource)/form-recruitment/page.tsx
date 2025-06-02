@@ -201,759 +201,343 @@ export default function RecruitmentForm() {
     setIsSubmitting(true);
 
     try {
-      const emailContent = `<!DOCTYPE html>
+      const emailContent = `
+      <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hồ sơ ứng tuyển "${formData.hovaten || "Ứng viên"} - ${
-        formData.dienthoai || ""
-      }" - tuyendungbachlong@gmail.com - Gmail</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            color: #000;
-            line-height: 1.5;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hồ sơ ứng tuyển</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 20px;
+    font-size: 12px;
+  }
+  .apply-position {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0284c7; /* màu xanh dương */
+  padding: 8px 0;
+  border-bottom: 2px solid #facc15; /* vàng nhạt */
+  margin-bottom: 6px;
+}
 
-        .header {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 15px;
-        }
+  .container {
+    width: 794px;
+    margin: 0 auto;
+    padding: 20px 25px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
 
-        .job-title {
-            color: #0088cc;
-            font-size: 24px;
-            font-weight: normal;
-            margin: 0 0 10px 0;
-        }
+  h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 18px;
+  }
 
-        .section {
-            margin: 32px auto 32px auto; /* cách trên dưới, tự động căn giữa ngang */
-            border: 1.5px solid #eee;
-        }
+  .sub-title {
+    text-align: center;
+    font-size: 12px;
+    margin: 4px 0 16px;
+  }
 
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-        }
+  .section {
+    margin-bottom: 18px;
+  }
 
-        .section-divider {
-            border-bottom: 1px solid #ffd700;
-            margin: 5px 0 15px 0;
-        }
+  .section-title {
+    font-weight: bold;
+    background: #fff8dc;
+    border: 1px solid #ffd700;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
 
-        .info-row {
-            display: flex;
-            margin-bottom: 5px;
-        }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-top: 6px;
+  }
 
-        .info-label {
-            font-weight: bold;
-            width: 120px;
-            min-width: 120px;
-            margin-right: 10px;
-        }
+  td {
+    padding: 4px 3px;
+    vertical-align: top;
+  }
 
-        .info-value {
-            flex: 1;
-        }
+td.label {
+  font-weight: bold;
+  white-space: nowrap;
+  width: 16.66%; /* phù hợp cho 3 cột */
+}
+  .note {
+    font-size: 11px;
+    font-style: italic;
+    text-align: right;
+    margin-top: 15px;
+  }
 
-        .info-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
+  .checkbox {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #000;
+    margin-right: 5px;
+  }
 
-        .info-item {
-            width: 33%;
-            min-width: 250px;
-            margin-bottom: 5px;
-        }
+  .signature {
+    text-align: right;
+    margin-top: 20px;
+  }
 
-        .company-section {
-            margin-bottom: 15px;
-        }
+  .underline {
+    display: inline-block;
+    border-bottom: 1px dotted #000;
+    width: 100%;
+    height: 1em;
+  }
+  
+  @media print {
+    @page {
+      size: A4;
+      margin: 0;
+    }
 
-        .company-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+    }
 
-        .checkbox {
-            margin-right: 5px;
-        }
+    body {
+      transform: scale(0.85); /* Thu nhỏ toàn bố cục */
+      transform-origin: top left;
+      width: 117.6%; /* 100 / 0.85 */
+    }
 
-        .signature-section {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-        }
+    .container {
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
 
-        .signature-box {
-            text-align: center;
-            width: 200px;
-        }
+    table, td {
+      font-size: 10px !important;
+    }
 
-        .employer-section {
-            margin-top: 20px;
-        }
+    h1 {
+      font-size: 16px;
+    }
 
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            margin-right: 30px;
-        }
+    .section {
+      margin-bottom: 10px;
+    }
 
-        .checkbox-square {
-            width: 12px;
-            height: 12px;
-            border: 1px solid #000;
-            margin-right: 5px;
-            display: inline-block;
-        }
+    .section-title {
+      font-size: 12px;
+      padding: 3px 6px;
+    }
 
-        .dotted-line {
-            border-bottom: 1px dotted #000;
-            flex: 1;
-        }
+    .checkbox {
+      transform: scale(0.9);
+    }
+  }
+</style>
 
-        .employer-note {
-            text-align: right;
-            font-style: italic;
-            margin-top: 5px;
-            font-size: 14px;
-        }
-
-        .link {
-            color: #0088cc;
-            text-decoration: none;
-        }
-
-        @media print {
-            body {
-                padding: 0;
-            }
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
-            min-height: 100vh;
-            padding: 2rem 1rem;
-        }
-
-        .container {
-            max-width: 1024px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #111827;
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            color: #6b7280;
-            margin-bottom: 1rem;
-        }
-
-        .email-notice {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            margin-top: 1rem;
-            display: inline-block;
-        }
-
-        .email-notice p {
-            color: #15803d;
-            font-size: 0.875rem;
-            margin: 0;
-        }
-
-        .card {
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            overflow: hidden;
-        }
-
-        .card-header {
-            background: #f9fafb;
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #111827;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .grid-cols-1 {
-            grid-template-columns: 1fr;
-        }
-
-        .grid-cols-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .grid-cols-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        @media (max-width: 768px) {
-            .grid-cols-2,
-            .grid-cols-3 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group.col-span-2 {
-            grid-column: span 2;
-        }
-
-        @media (max-width: 768px) {
-            .form-group.col-span-2 {
-                grid-column: span 1;
-            }
-        }
-
-        label {
-            font-weight: 500;
-            color: #374151;
-            font-size: 0.875rem;
-        }
-
-        .required::after {
-            content: " *";
-            color: #ef4444;
-        }
-
-        input,
-        select,
-        textarea {
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .separator {
-            height: 1px;
-            background: #e5e7eb;
-            margin: 2rem 0;
-        }
-
-        .section-title {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #111827;
-        }
-
-        .submit-container {
-            display: flex;
-            justify-content: center;
-            padding-top: 1.5rem;
-        }
-
-        .submit-btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 0.75rem 3rem;
-            border-radius: 0.5rem;
-            font-size: 1.125rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .submit-btn:hover {
-            background: #2563eb;
-        }
-
-        .submit-btn:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-        }
-
-        .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
-    </style>
 </head>
 <body>
-    <h1 class="job-title">${formData.vitriungtuyen1}</h1>
+  <div class="container">
+    <h1>HỒ SƠ ỨNG TUYỂN</h1>
+    <div class="sub-title">Ngày phỏng vấn: ....../....../......</div>
+    <div class="apply-position">
+  ${formData.vitriungtuyen1 || "Vị trí ứng tuyển"}
+</div>
 
+    <!-- THÔNG TIN CÁ NHÂN -->
     <div class="section">
-        <h2 class="section-title">THÔNG TIN CÁ NHÂN</h2>
-        <div class="section-divider"></div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Họ tên:</div>
-                    <div class="info-value">${formData.hovaten}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Giới tính:</div>
-                    <div class="info-value">${formData.gioitinh}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Ngày sinh:</div>
-                    <div class="info-value">${formData.ngaysinh}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Điện thoại:</div>
-                    <div class="info-value">${formData.dienthoai}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">CMND/CCCD:</div>
-                    <div class="info-value">
-                    ${formData.CMND}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Ngày cấp:</div>
-                    <div class="info-value">${formData.ngaycap}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Hôn nhân:</div>
-                    <div class="info-value">${formData.honnhan}</div>
-                </div>
-            </div>
-            <div class="info-item"></div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Nơi cấp:</div>
-                    <div class="info-value">${formData.noicap}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Nơi ở hiện tại:</div>
-                    <div class="info-value">${formData.thuongtru}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Email:</div>
-                    <div class="info-value"><a href="mailto:${
-                      formData.email
-                    }" class="link">${formData.email}</a></div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Facebook:</div>
-                    <div class="info-value"><a href="${
-                      formData.facebook
-                    }" class="link">${formData.facebook}</a></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-label">Giới thiệu bản thân:</div>
-            <div class="info-value">${formData.gioithieubanthan}</div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-label">Mục tiêu nghề nghiệp:</div>
-            <div class="info-value">${formData.muctieunghenghiep}</div>
-        </div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Chiều cao:</div>
-                    <div class="info-value">${formData.chieucao}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Cân nặng:</div>
-                    <div class="info-value">${formData.cannang}</div>
-                </div>
-            </div>
-        </div>
+      <div class="section-title">THÔNG TIN CÁ NHÂN</div>
+      <table>
+        <tr><td class="label">Họ tên:</td><td>${
+          formData.hovaten || ""
+        }</td><td class="label">Giới tính:</td><td>${
+        formData.gioitinh || ""
+      }</td></tr>
+        <tr><td class="label">Ngày sinh:</td><td>${
+          formData.ngaysinh || ""
+        }</td><td class="label">CMND/CCCD:</td><td>${
+        formData.CMND || ""
+      }</td></tr>
+        <tr><td class="label">Ngày cấp:</td><td>${
+          formData.ngaycap || ""
+        }</td><td class="label">Nơi cấp:</td><td>${
+        formData.noicap || ""
+      }</td></tr>
+        <tr><td class="label">Điện thoại:</td><td>${
+          formData.dienthoai || ""
+        }</td><td class="label">Hôn nhân:</td><td>${
+        formData.honnhan || ""
+      }</td></tr>
+        <tr><td class="label">Nơi ở hiện tại:</td><td>${
+          formData.thuongtru || ""
+        }</td><td class="label">Email:</td><td><a href="mailto:${
+        formData.email || ""
+      }">${formData.email || ""}</a></td></tr>
+        <tr><td class="label">Facebook:</td><td colspan="3"><a href="${
+          formData.facebook || "#"
+        }">${formData.facebook || ""}</a></td></tr>
+        <tr><td class="label">Giới thiệu bản thân:</td><td colspan="3">${
+          formData.gioithieubanthan || ""
+        }</td></tr>
+        <tr><td class="label">Mục tiêu nghề nghiệp:</td><td colspan="3">${
+          formData.muctieunghenghiep || ""
+        }</td></tr>
+        <tr><td class="label">Chiều cao:</td><td>${
+          formData.chieucao || ""
+        }</td><td class="label">Cân nặng:</td><td>${
+        formData.cannang || ""
+      }</td></tr>
+      </table>
     </div>
 
+    <!-- THU NHẬP -->
     <div class="section">
-        <h2 class="section-title">THU NHẬP MONG MUỐN</h2>
-        <div class="section-divider"></div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Lương cơ bản:</div>
-                    <div class="info-value">${formData.luongcoban}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">KPI:</div>
-                    <div class="info-value">${formData.kpi}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-label">Tổng thu nhập mong muốn tháng đầu tiên (Bao gồm lương cơ bản và KPI ):</div>
-            <div class="info-value">${formData.tongthunhapmongmuon}</div>
-        </div>
+      <div class="section-title">THU NHẬP MONG MUỐN</div>
+      <table>
+        <tr><td class="label">Lương cơ bản:</td><td>${
+          formData.luongcoban || ""
+        }</td><td class="label">KPI:</td><td>${formData.kpi || ""}</td></tr>
+        <tr><td colspan="4"><strong>Tổng thu nhập mong muốn:</strong> ${
+          formData.tongthunhapmongmuon || ""
+        }</td></tr>
+      </table>
     </div>
 
+    <!-- HỌC VẤN -->
     <div class="section">
-        <h2 class="section-title">TRÌNH ĐỘ HỌC VẤN</h2>
-        <div class="section-divider"></div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Tên trường:</div>
-                    <div class="info-value">${formData.tentruong}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Ngành học:</div>
-                    <div class="info-value">${formData.nganhhoc}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Trình độ:</div>
-                    <div class="info-value">${formData.trinhdo}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Tình trạng:</div>
-                    <div class="info-value">${formData.tinhtrang}</div>
-                </div>
-            </div>
-        </div>
+      <div class="section-title">TRÌNH ĐỘ HỌC VẤN</div>
+      <table>
+        <tr><td class="label">Tên trường:</td><td>${
+          formData.tentruong || ""
+        }</td><td class="label">Ngành học:</td><td>${
+        formData.nganhhoc || ""
+      }</td></tr>
+        <tr><td class="label">Trình độ:</td><td>${
+          formData.trinhdo || ""
+        }</td><td class="label">Tình trạng:</td><td>${
+        formData.tinhtrang || ""
+      }</td></tr>
+      </table>
     </div>
 
+    <!-- CHỨNG CHỈ -->
     <div class="section">
-        <h2 class="section-title">CHỨNG CHỈ</h2>
-        <div class="section-divider"></div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Ngoại ngữ:</div>
-                    <div class="info-value">${formData.ngoaingu}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Tin học:</div>
-                    <div class="info-value">${formData.tinhoc || ""}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Kỹ năng khác (nếu có):</div>
-                    <div class="info-value">${formData.kynangkhac || ""}</div>
-                </div>
-            </div>
-        </div>
+      <div class="section-title">CHỨNG CHỈ</div>
+      <table>
+        <tr><td class="label">Ngoại ngữ:</td><td>${
+          formData.ngoaingu || ""
+        }</td><td class="label">Kỹ năng khác:</td><td>${
+        formData.kynangkhac || ""
+      }</td></tr>
+      </table>
     </div>
 
+    <!-- KINH NGHIỆM -->
+<div class="section">
+  <div class="section-title">QUÁ TRÌNH LÀM VIỆC TRƯỚC ĐÂY</div>
+  <table>
+    <tr><td colspan="6"><strong>Công ty 1</strong></td></tr>
+    <tr>
+      <td class="label">Thời gian:</td><td>${formData.thoigiancty || ""}</td>
+      <td class="label">Tên công ty:</td><td>${formData.tencty || ""}</td>
+      <td class="label">Thu nhập:</td><td>${formData.thunhapcty || ""}</td>
+    </tr>
+    <tr>
+      <td class="label">Công việc:</td><td>${formData.cviecdalam || ""}</td>
+      <td class="label">Lý do nghỉ:</td><td colspan="4">${
+        formData.lydonghi || ""
+      }</td>
+    </tr>
+
+    <tr><td colspan="6"><strong>Công ty 2</strong></td></tr>
+    <tr>
+      <td class="label">Thời gian:</td><td>${formData.thoigiancty1 || ""}</td>
+      <td class="label">Tên công ty:</td><td>${formData.tencty1 || ""}</td>
+      <td class="label">Thu nhập:</td><td>${formData.thunhapcty1 || ""}</td>
+    </tr>
+    <tr>
+      <td class="label">Công việc:</td><td>${formData.cviecdalam1 || ""}</td>
+      <td class="label">Lý do nghỉ:</td><td colspan="4">${
+        formData.lydonghi1 || ""
+      }</td>
+    </tr>
+  </table>
+</div>
+
+
+    <!-- CA LÀM VIỆC -->
+<div class="section">
+  <div class="section-title">CA LÀM VIỆC</div>
+  <table>
+    <tr>
+      <td class="label">Lịch làm việc:</td><td>${
+        formData.full1ngay ? "Có" : ""
+      }</td>
+      <td class="label">Xoay ca:</td><td>${formData.xoayca ? "Có" : ""}</td>
+    </tr>
+    <tr>
+      <td class="label">Vị trí ưu tiên 1:</td><td>${
+        formData.vitriungtuyen1 || ""
+      }</td>
+      <td class="label">Ưu tiên 2:</td><td>${formData.vitriungtuyen2 || ""}</td>
+    </tr>
+    <tr>
+      <td class="label">Chi nhánh 1:</td><td>${
+        formData.diadiemmongmuonlamviec1 || ""
+      }</td>
+      <td class="label">Chi nhánh 2:</td><td>${
+        formData.diadiemmongmuonlamviec2 || ""
+      }</td>
+    </tr>
+    <tr>
+      <td class="label">Bận cá nhân:</td><td>${formData.thoigianban || ""}</td>
+      <td class="label">Chữ ký:</td><td></td>
+    </tr>
+    <tr>
+      <td class="label">Kênh tuyển dụng:</td><td>${
+        formData.kenhtuyendung || ""
+      }</td>
+      <td class="label">Bảo hiểm:</td><td>${formData.baohiem || ""}</td>
+    </tr>
+    <tr>
+      <td class="label">Ngày thử việc:</td><td colspan="3">${
+        formData.ngaythuviec || ""
+      }</td>
+    </tr>
+  </table>
+</div>
+
+
+    <!-- NHẬN XÉT -->
     <div class="section">
-        <h2 class="section-title">QUÁ TRÌNH LÀM VIỆC TRƯỚC ĐÂY</h2>
-        <div class="section-divider"></div>
-
-        <div class="company-section">
-            <div class="company-title">Công ty 1</div>
-            <div class="info-group">
-                <div class="info-item">
-                    <div class="info-row">
-                        <div class="info-label">Thời gian:</div>
-                        <div class="info-value">${formData.thoigiancty}</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-row">
-                        <div class="info-label">Tên công ty:</div>
-                        <div class="info-value">${formData.tencty}</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-row">
-                        <div class="info-label">Công việc đã làm:</div>
-                        <div class="info-value">${formData.cviecdalam}</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-group">
-                <div class="info-item">
-                    <div class="info-row">
-                        <div class="info-label">Thu nhập:</div>
-                        <div class="info-value">${formData.thunhapcty}</div>
-                    </div>
-                </div>
-                <div class="info-item" style="width: 66%;">
-                    <div class="info-row">
-                        <div class="info-label">Lý do nghỉ việc:</div>
-                        <div class="info-value">${formData.lydonghi}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="company-section">
-            <div class="company-title">Công ty 2</div>
-            <div class="info-group">
-                <div class="info-item">
-                    <div class="info-row">
-                        <div class="info-label">Thời gian:</div>
-                        <div class="info-value">${formData.thoigiancty1}</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-row">
-                        <div class="info-label">Tên công ty:</div>
-                        <div class="info-value">${formData.tencty1}</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-row">
-                        <div class="info-label">Công việc đã làm:</div>
-                        <div class="info-value">${formData.cviecdalam1}</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-group">
-                <div class="info-item">
-                    <div class="info-row">
-                        <div class="info-label">Thu nhập:</div>
-                        <div class="info-value">${formData.thunhapcty1}</div>
-                    </div>
-                </div>
-                <div class="info-item" style="width: 66%;">
-                    <div class="info-row">
-                        <div class="info-label">Lý do nghỉ việc:</div>
-                        <div class="info-value">${formData.lydonghi1}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="section-title">NHẬN XÉT NHÀ TUYỂN DỤNG</div>
+      <table>
+        <tr>
+          <td class="label">Phù hợp:</td><td><span class="checkbox"></span>Phù hợp &nbsp;&nbsp;&nbsp; <span class="checkbox"></span>Chưa phù hợp</td>
+          <td class="label">Điểm:</td><td>......</td>
+        </tr>
+        <tr><td class="label">Ngày:</td><td>....../....../......</td><td colspan="2" style="text-align: right;">(Dành cho nhà tuyển dụng)</td></tr>
+        <tr><td class="label">Vị trí chốt thử việc:</td><td colspan="3"><span class="underline"></span></td></tr>
+        <tr><td class="label">Chi nhánh thử việc:</td><td colspan="3"><span class="underline"></span></td></tr>
+        <tr><td class="label">Nhận xét khác:</td><td colspan="3"><span class="underline"></span></td></tr>
+      </table>
     </div>
-
-    <div class="section">
-        <h2 class="section-title">CA LÀM VIỆC</h2>
-        <div class="section-divider"></div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Một ngày Full, một ngày 6,5 tiếng:</div>
-                    <div class="info-value">${formData.full1ngay}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Xoay ca 8 tiếng:</div>
-                    <div class="info-value">${formData.xoayca}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Vị trí ứng tuyển ưu tiên 1:</div>
-                    <div class="info-value">${formData.vitriungtuyen1}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Vị trí ứng tuyển ưu tiên 2:</div>
-                    <div class="info-value">${formData.vitriungtuyen2}</div>
-                </div>
-            </div>
-        </div>
-         <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                  <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 1:</div>
-                  <div class="info-value">${
-                    formData.diadiemmongmuonlamviec1
-                  }</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                   <div class="info-label">Chi nhánh mong muốn đến Thử việc/Làm việc ưu tiên 2:</div>
-                    <div class="info-value">${
-                      formData.diadiemmongmuonlamviec2
-                    }</div>
-                </div>
-            </div>
-        </div>            
-        
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Thời gian bận việc cá nhân:</div>
-                    <div class="info-value">${formData.thoigianban}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Chữ ký ứng viên</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-group">
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Kênh tuyển dụng:</div>
-                    <div class="info-value">${formData.kenhtuyendung}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Tham gia bảo hiểm:</div>
-                    <div class="info-value">${formData.baohiem}</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-row">
-                    <div class="info-label">Ngày thử việc:</div>
-                    <div class="info-value">${formData.ngaythuviec}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2 class="section-title">NHẬN XÉT NHÀ TUYỂN DỤNG</h2>
-        <div class="section-divider"></div>
-
-        <div style="display: flex; margin-bottom: 15px;">
-            <div class="checkbox-container">
-                <div class="checkbox-square"></div>
-                <div>Phù hợp:</div>
-            </div>
-            <div class="checkbox-container">
-                <div class="checkbox-square"></div>
-                <div>Chưa phù hợp:</div>
-            </div>
-            <div style="flex: 1;"></div>
-            <div style="display: flex; align-items: center;">
-                <div style="margin-right: 10px;">Điểm:</div>
-                <div style="width: 50px;"></div>
-                <div style="margin: 0 10px;">Ngày: ...../...../......</div>
-            </div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-label">Vị trí chốt thử việc:</div>
-            <div class="info-value dotted-line"></div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-label">Chi nhánh thử việc:</div>
-            <div class="info-value dotted-line"></div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-label">Nhận xét khác:</div>
-            <div class="info-value dotted-line"></div>
-        </div>
-
-        <div class="employer-note">(Dành cho nhà tuyển dụng)</div>
-    </div>
+  </div>
 </body>
 </html>`;
 
