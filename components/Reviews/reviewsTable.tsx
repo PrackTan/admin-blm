@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { FaStar } from "react-icons/fa6";
 import { BsFillChatRightQuoteFill } from "react-icons/bs";
 
@@ -15,7 +15,8 @@ import {
 import ReviewDialog from "./review-Dialog";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/useFetch";
-
+import ReviewsPagination from "./reviewsPagination"; // Import the pagination component
+import usePagedReviews from "@/hooks/usePageReivews";
 interface PostTableProps {
   limit?: number;
   data: Review[];
@@ -39,8 +40,15 @@ interface Review {
   };
 }
 
-const ReviewsTable = ({ data, title, limit }: PostTableProps) => {
-  console.log("data", data);
+const ReviewsTable = ({ data, title, limit = 10 }: PostTableProps) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages = Math.max(1, Math.ceil(data.length / limit));
+
+  /* các item hiển thị trên trang hiện tại */
+  const currentReviews = useMemo(() => {
+    const first = (currentPage - 1) * limit;
+    return data.slice(first, first + limit);
+  }, [data, currentPage, limit]);
   const format = (date: string) => {
     return new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -55,20 +63,25 @@ const ReviewsTable = ({ data, title, limit }: PostTableProps) => {
     rating: 0,
   });
 
+  // Calculate the index of the first and last review on the current page
+
   const handleAddReview = () => {
     const postReview = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/reviews", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await useFetch({
+          endpoint: "http://localhost:8080/api/v1/reviews",
+          options: {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newReview),
           },
-          body: JSON.stringify(newReview),
         });
-        if (!response.ok) {
+        if (!response) {
           throw new Error("Failed to post review");
         }
-        const result = await response.json();
+        const result = response.data;
         console.log("Review posted successfully:", result);
         alert("🟢 Review posted successfully!");
         window.location.reload(); // refresh danh sách review
@@ -148,7 +161,7 @@ const ReviewsTable = ({ data, title, limit }: PostTableProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.map((review, index) => (
+            {currentReviews?.map((review, index) => (
               <TableRow key={index}>
                 <TableCell>
                   <div className="flex flex-col">
@@ -198,6 +211,11 @@ const ReviewsTable = ({ data, title, limit }: PostTableProps) => {
             ))}
           </TableBody>
         </Table>
+        <ReviewsPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </>
   );

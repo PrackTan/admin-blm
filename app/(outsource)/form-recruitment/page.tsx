@@ -71,8 +71,7 @@ export default function RecruitmentForm() {
     thunhapcty1: "",
     lydonghi1: "",
     thoigianban: "",
-    full1ngay: "",
-    xoayca: "",
+    fullorpart: "",
     vitriungtuyen1: "",
     vitriungtuyen2: "",
     diadiemmongmuonlamviec1: "",
@@ -157,43 +156,60 @@ export default function RecruitmentForm() {
       }));
     }
   };
+  const branchOptions = [
+    "81-83 Đường Trần Phú, Phường 04, Quận 05, Hồ Chí Minh",
+    "251-253 Đường Trần Hưng Đạo, Phường Cô Giang, Quận 1, Hồ Chí Minh",
+    "480-482 Đường Quang Trung, Phường 10, Quận Gò Vấp, Hồ Chí Minh",
+    "194 Đường Võ Văn Ngân, Phường Bình Thọ, Thành phố Thủ Đức, Hồ Chí Minh",
+    "316-318 Đường 3 Tháng 2 Phường 12, Quận 10, Hồ Chí Minh",
+    "225F Đường Trần Quang Khải, Phường Tân Định, Quận 1, Hồ Chí Minh",
+    "581C Đường Nguyễn Thị Thập, Phường Tân Phong, Quận 7, Hồ Chí Minh",
+    "134-136 Đường Trần Phú, Phường 04, Quận 05, Hồ Chí Minh",
+  ];
+
   const positionOptions = [
-    "Quản lý/phó quản lý cửa hàng",
-    "Nhân viên kế toán bán hàng",
-    "Nhân viên thu ngân",
-    "Nhân viên Kế Toán Kho – Linh Kiện Sửa Chữa",
-    "Nhân viên tư vấn bán hàng",
-    "Nhân viên tiếp nhận bảo hành",
-    "Nhân viên kỹ thuật phần mềm",
-    "Nhân viên kỹ thuật thay thế linh kiện",
-    "Nhân viên kỹ thuật sửa chữa mainboard",
-    "Chuyên viên kế toán nội bộ",
-    "Chuyên viên kế toán thuế",
-    "Chuyên viên kế toán kiểm toán",
-    "Chuyên viên kế toán tài chính",
-    "Chuyên viên kế toán thanh toán",
-    "Chuyên viên kế toán công nợ",
-    "Trưởng phòng media",
-    "Chuyên viên digital marketing",
-    "Chuyên viên sáng tạo nội dung - reviewer",
-    "Chuyên viên brand marketing",
-    "Chuyên viên social marketing",
-    "Chuyên viên content SEO",
-    "Chuyên viên video editor",
-    "Chuyên viên graphic designer",
-    "Chuyên viên vận hành sàn TMĐT (Shopee-Tiktok)",
-    "Trưởng phòng IT",
-    "Chuyên viên quản trị Website",
-    "Chuyên viên lập trình Website",
-    "Chuyên viên ngành hàng Điện thoại/MTB/Laptop",
-    "Chuyên viên ngành hàng phụ kiện - dịch vụ tiện ích",
-    "Chuyên viên hành chính Chuyên sự",
-    "Chuyên viên hành chính văn phòng",
-    "Chuyên viên giám sát",
-    "Chuyên viên đào tạo",
-    "Chuyên viên call center",
-    "Nhân viên Tiếp Đón Khách Hàng (Bảo Vệ)",
-    "Nhân viên kho vận",
+    "Kế toán thu ngân",
+    "Tư vấn bán hàng",
+    "Hỗ trợ kỹ thuật",
+    "Kế toán bán hàng",
+    "Quản lý/ Phó quản lý cửa hàng",
+    "Kỹ thuật sửa chữa trên main điện thoại IOS và ANDROID",
+    "Chuyên viên Tiếp nhận bảo hành",
+    "Kỹ thuật thay thế linh kiện ngoại vi",
+    "Kế toán Kho",
+    "Kế toán viên",
+    "Brand Marketing Thương Hiệu Apple",
+    "Brand Marketing Thương Hiệu Samsung",
+    "Kế Toán Thuế",
+    "Phó Phòng Kinh Doanh",
+    "Phó Phòng Marketing",
+    "Kế Toán Kiểm Toán",
+    "Kế Toán Tài Chánh",
+    "Chuyên viên kinh doanh qua sàn thương mại điện tử",
+    "Chuyên viên TikTok",
+    "Chuyên viên Sáng tạo nội dung – Nền tảng TikTok",
+    "Chuyên viên Brand Marketing",
+    "Chuyên viên Marketing",
+    "Chuyên viên Content Writer (chuẩn SEO)",
+    "Kế toán tổng hợp",
+    "Chuyên Viên Chăm Sóc Khách Hàng",
+    "Quản trị Website",
+    "Chuyên viên Digital Marketing",
+    "Trưởng phòng Media",
+    "Chuyên viên Graphic Designer",
+    "Chuyên viên Lập trình Website",
+    "Chuyên viên Video Editor",
+    "Chuyên viên Reviewer",
+    "Chuyên viên Ngành hàng Điện thoại/MTB/Laptop",
+    "Chuyên viên ngành hàng Phụ kiện",
+    "Chuyên viên Trả góp Dịch vụ tiện ích",
+    "Chuyên viên Social Marketing",
+    "Chuyên viên Hành chánh nhân sự",
+    "Chuyên viên Giám sát",
+    "Chuyên viên Tuyển dụng",
+    "Chuyên viên Hành chính văn phòng",
+    "Chuyên viên Đào Tạo",
+    "Kế Toán Nội Bộ",
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -261,7 +277,7 @@ export default function RecruitmentForm() {
     width: 100%;
     border-collapse: collapse;
     font-size: 11px;
-    margin-top: 6px;
+    margin-top: 10px;
   }
 
   td {
@@ -288,7 +304,15 @@ td.label {
     border: 1px solid #000;
     margin-right: 5px;
   }
-
+      .section table + table {
+  margin-top: 10px;
+  border-top: 1px dashed #ccc;
+  padding-top: 6px;
+}
+.section table td[colspan="2"]:last-child {
+  text-align: right;
+  font-weight: bold;
+}
   .signature {
     text-align: right;
     margin-top: 20px;
@@ -463,7 +487,9 @@ td.label {
         formData.lydonghi || ""
       }</td>
     </tr>
-
+    ${
+      formData.tencty1
+        ? `
     <tr><td colspan="6"><strong>Công ty 2</strong></td></tr>
     <tr>
       <td class="label">Thời gian:</td><td>${formData.thoigiancty1 || ""}</td>
@@ -476,6 +502,9 @@ td.label {
         formData.lydonghi1 || ""
       }</td>
     </tr>
+    `
+        : ""
+    }
   </table>
 </div>
 
@@ -483,43 +512,46 @@ td.label {
     <!-- CA LÀM VIỆC -->
 <div class="section">
   <div class="section-title">CA LÀM VIỆC</div>
+    <!-- Phần trên -->
   <table>
     <tr>
-      <td class="label">Lịch làm việc:</td><td>${
-        formData.full1ngay ? "Có" : ""
-      }</td>
-      <td class="label">Xoay ca:</td><td>${formData.xoayca ? "Có" : ""}</td>
+      <td class="label">Làm full time hoặc xoay ca:</td>
+      <td>${formData.fullorpart || ""}</td>
     </tr>
     <tr>
-      <td class="label">Vị trí ưu tiên 1:</td><td>${
-        formData.vitriungtuyen1 || ""
-      }</td>
-      <td class="label">Ưu tiên 2:</td><td>${formData.vitriungtuyen2 || ""}</td>
+      <td class="label">Vị trí ưu tiên 1:</td>
+      <td>${formData.vitriungtuyen1 || ""}</td>
+      <td class="label">Ưu tiên 2:</td>
+      <td>${formData.vitriungtuyen2 || ""}</td>
     </tr>
     <tr>
-      <td class="label">Chi nhánh 1:</td><td>${
-        formData.diadiemmongmuonlamviec1 || ""
-      }</td>
-      <td class="label">Chi nhánh 2:</td><td>${
-        formData.diadiemmongmuonlamviec2 || ""
-      }</td>
-    </tr>
-    <tr>
-      <td class="label">Bận cá nhân:</td><td>${formData.thoigianban || ""}</td>
-      <td class="label">Chữ ký:</td><td></td>
-    </tr>
-    <tr>
-      <td class="label">Kênh tuyển dụng:</td><td>${
-        formData.kenhtuyendung || ""
-      }</td>
-      <td class="label">Bảo hiểm:</td><td>${formData.baohiem || ""}</td>
-    </tr>
-    <tr>
-      <td class="label">Ngày thử việc:</td><td colspan="3">${
-        formData.ngaythuviec || ""
-      }</td>
+      <td class="label">Chi nhánh 1:</td>
+      <td>${formData.diadiemmongmuonlamviec1 || ""}</td>
+      <td class="label">Chi nhánh 2:</td>
+      <td>${formData.diadiemmongmuonlamviec2 || ""}</td>
     </tr>
   </table>
+ <!-- Phần dưới -->
+<table>
+  <tr>
+    <td class="label">Thời gian bận việc cá nhân:</td>
+    <td>${formData.thoigianban || ""}</td>
+    <td colspan="2" font-weight: bold;">Chữ ký ứng viên</td>
+  </tr>
+  <tr>
+    <td class="label">Kênh tuyển dụng:</td>
+    <td>${formData.kenhtuyendung || ""}</td>
+  </tr>
+  <tr>
+    <td class="label">Tham gia bảo hiểm:</td>
+    <td>${formData.baohiem || ""}</td>
+  </tr>
+  <tr>
+    <td class="label">Ngày thử việc:</td>
+    <td colspan="3">${formData.ngaythuviec || ""}</td>
+  </tr>
+</table>
+
 </div>
 
 
@@ -612,8 +644,7 @@ td.label {
           thunhapcty1: "",
           lydonghi1: "",
           thoigianban: "",
-          full1ngay: "",
-          xoayca: "",
+          fullorpart: "",
           vitriungtuyen1: "",
           vitriungtuyen2: "",
           diadiemmongmuonlamviec1: "",
@@ -1300,11 +1331,14 @@ td.label {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="full1ngay">Có thể làm full 1 ngày *</Label>
+                <Label htmlFor="full1ngay">
+                  Có thể làm full 1 ngày Hoặc xoay ca* (Ca làm việc dành cho vị
+                  trí ứng tuyển KHỐI CỬA HÀNG )
+                </Label>
                 <Select
-                  value={formData.full1ngay}
+                  value={formData.fullorpart}
                   onValueChange={(value) =>
-                    handleSelectChange("full1ngay", value)
+                    handleSelectChange("fullorpart", value)
                   }
                   required
                 >
@@ -1312,31 +1346,21 @@ td.label {
                     <SelectValue placeholder="Chọn" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Có">Có</SelectItem>
-                    <SelectItem value="Không">Không</SelectItem>
+                    <SelectItem value="Làm full 1 ngày">
+                      Làm full 1 ngày
+                    </SelectItem>
+                    <SelectItem value="Xoay ca">Xoay ca</SelectItem>
                   </SelectContent>
                 </Select>
+                <div className="text-sm text-gray-500">
+                  Ca làm việc dành cho vị trí ứng tuyển KHỐI VĂN PHÒNG (Thời
+                  gian làm việc cố định: 08h30 - 17h30 từ thứ 2 đến thứ 7)
+                </div>
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor="xoayca">Có thể xoay ca *</Label>
-                <Select
-                  value={formData.xoayca}
-                  onValueChange={(value) => handleSelectChange("xoayca", value)}
-                  required
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Chọn" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Có">Có</SelectItem>
-                    <SelectItem value="Không">Không</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="vitriungtuyenthem1">Vị trí ứng tuyển 1 *</Label>
+                <Label htmlFor="vitriungtuyenthem1">
+                  Vị trí ứng tuyển ưu tiên 1 *
+                </Label>
                 <Select
                   value={formData.vitriungtuyen1}
                   onValueChange={(value) =>
@@ -1357,7 +1381,9 @@ td.label {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="vitriungtuyen2">Vị trí ứng tuyển 2</Label>
+                <Label htmlFor="vitriungtuyen2">
+                  Vị trí ứng tuyển ưu tiên 2 *
+                </Label>
                 <Select
                   value={formData.vitriungtuyen2}
                   onValueChange={(value) =>
@@ -1380,28 +1406,48 @@ td.label {
                 <Label htmlFor="diadiemmongmuonlamviec1">
                   Địa điểm mong muốn 1 *
                 </Label>
-                <Input
-                  id="diadiemmongmuonlamviec1"
-                  name="diadiemmongmuonlamviec1"
+                <Select
                   value={formData.diadiemmongmuonlamviec1}
-                  onChange={handleChange}
-                  placeholder="Địa điểm làm việc ưu tiên"
+                  onValueChange={(value) =>
+                    handleSelectChange("diadiemmongmuonlamviec1", value)
+                  }
                   required
-                />
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chọn địa điểm làm việc ưu tiên 1" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-56 overflow-auto">
+                    {branchOptions.map((branch) => (
+                      <SelectItem key={branch} value={branch}>
+                        {branch}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="diadiemmongmuonlamviec2">
                   Địa điểm mong muốn 2 *
                 </Label>
-                <Input
-                  id="diadiemmongmuonlamviec2"
-                  name="diadiemmongmuonlamviec2"
+                <Select
                   value={formData.diadiemmongmuonlamviec2}
-                  onChange={handleChange}
-                  placeholder="Địa điểm làm việc thứ 2"
+                  onValueChange={(value) =>
+                    handleSelectChange("diadiemmongmuonlamviec2", value)
+                  }
                   required
-                />
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chọn địa điểm làm việc thứ 2" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-56 overflow-auto">
+                    {branchOptions.map((branch) => (
+                      <SelectItem key={branch} value={branch}>
+                        {branch}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
           </Card>
