@@ -32,6 +32,7 @@ import {
   Minus,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 
 export default function RecruitmentForm() {
   const [formData, setFormData] = useState({
@@ -84,6 +85,9 @@ export default function RecruitmentForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [showSecondCompany, setShowSecondCompany] = useState(false);
+  const searchParams = useSearchParams();
+  const slug = searchParams.get("slug"); // 👉 lấy được slug từ URL
+  console.log("slug từ PHP truyền vào:", slug);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
