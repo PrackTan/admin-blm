@@ -1407,7 +1407,7 @@ td.label {
                   }
                   required
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="max-w-full truncate">
                     <SelectValue placeholder="Chọn địa điểm làm việc ưu tiên 1" />
                   </SelectTrigger>
                   <SelectContent className="max-h-56 overflow-auto">
@@ -1431,7 +1431,7 @@ td.label {
                   }
                   required
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="max-w-full truncate">
                     <SelectValue placeholder="Chọn địa điểm làm việc thứ 2" />
                   </SelectTrigger>
                   <SelectContent className="max-h-56 overflow-auto">
