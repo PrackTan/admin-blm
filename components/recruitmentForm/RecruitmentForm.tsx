@@ -34,7 +34,7 @@ import {
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 
-export default function RecruitmentForm({ slug }: { slug: string }) {
+export default function RecruitmentForm() {
   const [formData, setFormData] = useState({
     hovaten: "",
     gioitinh: "",
@@ -86,6 +86,7 @@ export default function RecruitmentForm({ slug }: { slug: string }) {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [showSecondCompany, setShowSecondCompany] = useState(false);
   const searchParams = useSearchParams();
+  const slug = searchParams.get("slug") || "";
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
