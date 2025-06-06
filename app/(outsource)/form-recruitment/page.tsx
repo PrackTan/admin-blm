@@ -1,10 +1,6 @@
 import RecruitmentForm from "@/components/recruitmentForm/RecruitmentForm";
-import { Suspense } from "react";
 
-export default function Page() {
-  return (
-    <Suspense fallback={<div>Đang tải form...</div>}>
-      <RecruitmentForm />
-    </Suspense>
-  );
+export default function Page({ searchParams }: any) {
+  const slug = typeof searchParams?.slug === "string" ? searchParams.slug : "";
+  return <RecruitmentForm slug={slug} />;
 }
