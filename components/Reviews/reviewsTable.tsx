@@ -42,12 +42,12 @@ interface Review {
 
 const ReviewsTable = ({ data, title, limit = 10 }: PostTableProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const totalPages = Math.max(1, Math.ceil(data.length / limit));
+  const totalPages = Math.max(1, Math.ceil(data?.length / limit));
 
   /* các item hiển thị trên trang hiện tại */
   const currentReviews = useMemo(() => {
     const first = (currentPage - 1) * limit;
-    return data.slice(first, first + limit);
+    return data?.slice(first, first + limit);
   }, [data, currentPage, limit]);
   const format = (date: string) => {
     return new Date(date).toLocaleDateString("en-US", {

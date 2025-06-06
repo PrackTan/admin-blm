@@ -487,9 +487,6 @@ td.label {
         formData.lydonghi || ""
       }</td>
     </tr>
-    ${
-      formData.tencty1
-        ? `
     <tr><td colspan="6"><strong>Công ty 2</strong></td></tr>
     <tr>
       <td class="label">Thời gian:</td><td>${formData.thoigiancty1 || ""}</td>
@@ -502,9 +499,6 @@ td.label {
         formData.lydonghi1 || ""
       }</td>
     </tr>
-    `
-        : ""
-    }
   </table>
 </div>
 

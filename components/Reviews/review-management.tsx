@@ -160,8 +160,8 @@ const ReviewsTable = ({
   };
 
   // Calculate pagination
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-  const paginatedData = data.slice(
+  const totalPages = Math.ceil(data?.length / itemsPerPage);
+  const paginatedData = data?.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -173,7 +173,7 @@ const ReviewsTable = ({
           <div>
             <CardTitle className="text-2xl font-bold">{title}</CardTitle>
             <CardDescription>
-              Showing {paginatedData.length} of {data.length} reviews
+              Showing {paginatedData?.length} of {data?.length} reviews
             </CardDescription>
           </div>
         </div>
@@ -192,8 +192,8 @@ const ReviewsTable = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedData.length > 0 ? (
-                paginatedData.map((review) => (
+              {paginatedData?.length > 0 ? (
+                paginatedData?.map((review) => (
                   <TableRow
                     key={review._id}
                     className="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
