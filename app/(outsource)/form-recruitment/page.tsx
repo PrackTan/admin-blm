@@ -384,7 +384,7 @@ td.label {
     <h1>HỒ SƠ ỨNG TUYỂN</h1>
     <div class="sub-title">Ngày phỏng vấn: ....../....../......</div>
     <div class="apply-position">
-  ${formData.vitriungtuyen1 || "Vị trí ứng tuyển"}
+  ${slug || formData.vitriungtuyen1}
 </div>
 
     <!-- THÔNG TIN CÁ NHÂN -->
